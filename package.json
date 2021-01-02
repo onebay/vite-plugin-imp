@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-imp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A vite plugin for import style automatic",
   "main": "dist/index.js",
   "scripts": {
