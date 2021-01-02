@@ -5,11 +5,11 @@ import { ImpConfig } from './shared'
 import chalk from 'chalk'
 
 const optionsCheck = (options: ImpConfig) => {
-  if (!options?.libList) {
-    console.log(chalk.yellow(`libList is is required, please check your options: ${options}`))
-    return false
+  if (Array.isArray(options?.libList) && options?.libList?.length) {
+    return true
   }
-  return true
+  console.log(chalk.yellow(`libList is required, please check your options!`))
+  return false
 }
 
 const pluginCreator = (options: ImpConfig) => {

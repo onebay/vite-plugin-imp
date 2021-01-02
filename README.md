@@ -1,4 +1,4 @@
-# vite-plugin-react
+# vite-plugin-imp
 
 A vite plugin for import style automatic.
 
