@@ -1,7 +1,7 @@
 import { Transform } from 'vite'
 import { ImpConfig, addImportToCode, codeIncludesLibraryName } from './shared'
 
-export const importTransformCreator = ({ libList = [] }: ImpConfig) => {
+export const importTransformCreator = (impConfig: ImpConfig) => {
 
   const importTransform: Transform = {
     test({ isBuild, isImport }) {
@@ -9,8 +9,8 @@ export const importTransformCreator = ({ libList = [] }: ImpConfig) => {
     },
     transform: ({ code }) => {
       let result = code
-      if (codeIncludesLibraryName(code, libList)) {
-        result = addImportToCode(code, libList)
+      if (codeIncludesLibraryName(code, impConfig.libList)) {
+        result = addImportToCode(code, impConfig)
       }
       return result
     }

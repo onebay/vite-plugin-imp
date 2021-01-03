@@ -1,14 +1,14 @@
 import { Plugin } from 'vite'
 import { importServerPluginCreator } from './serverPlugin'
 import { importTransformCreator } from './transform'
-import { ImpConfig } from './shared'
+import { ImpConfig, log } from './shared'
 import chalk from 'chalk'
 
 const optionsCheck = (options: ImpConfig) => {
   if (Array.isArray(options?.libList) && options?.libList?.length) {
     return true
   }
-  console.log(chalk.yellow(`libList is required, please check your options!`))
+  log(chalk.yellow(`libList is required, please check your options!`))
   return false
 }
 

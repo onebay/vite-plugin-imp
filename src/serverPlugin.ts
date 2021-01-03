@@ -3,7 +3,7 @@ import { ServerPlugin } from 'vite/dist/node/index'
 
 const fileTypes = ['vue', 'ts', 'tsx', 'js', 'jsx']
 
-export const importServerPluginCreator = ({ libList = [] }: ImpConfig) => {
+export const importServerPluginCreator = (impConfig: ImpConfig) => {
   const importServerPlugin: ServerPlugin = ({ app }) => {
     app.use(async (ctx, next) => {
       const splitPaths = ctx.path.split('.')
@@ -20,8 +20,8 @@ export const importServerPluginCreator = ({ libList = [] }: ImpConfig) => {
           code = await streamToString(ctx.body)
         }
         let result = code
-        if (codeIncludesLibraryName(code, libList)) {
-          result = addImportToCode(code, libList)
+        if (codeIncludesLibraryName(code, impConfig.libList)) {
+          result = addImportToCode(code, impConfig)
         }
   
         ctx.body = result

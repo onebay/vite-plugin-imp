@@ -23,17 +23,18 @@ yarn add vite-plugin-imp -D
 const vitePluginImpCreator = require('vite-plugin-imp')
 
 const vitePluginImp = vitePluginImpCreator({
+  optimize: true,
   libList: [
     {
-      libName: 'vant',
+      libraryName: 'vant',
       style: (name) => {
         return `vant/es/${name}/index.css`
       }
     },
     {
-      libName: 'onebay-ui',
+      libraryName: 'element-plusi',
       style: (name) => {
-        return `onebay-ui/dist/style/${name}.css`
+        return`element-plus/lib/theme-chalk/el-${name.slice(2)}.css`
       }
     }
   ]
