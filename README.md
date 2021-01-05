@@ -10,6 +10,30 @@ or
 yarn add vite-plugin-imp -D
 ```
 ## Usage
+``` js
+import { defineConfig } from 'vite'
+import vitePluginImp from 'vite-plugin-imp'
+export default defineConfig({
+  plugins: [vitePluginImp(config)]
+})
+```
+
+config is ImpConfig
+``` ts
+interface libItem {
+  // library name
+  libName: string
+  // component style file path
+  style: (name: string) => string
+  // default `es`
+  libDirectory?: string
+}
+
+interface ImpConfig {
+  libList: libItem[]
+}
+```
+
 ```js
 // vite.config.js
 import { defineConfig } from 'vite'
@@ -38,6 +62,7 @@ export default defineConfig({
   ]
 })
 ```
+
 
 just use the component like below, component style will be auto injected.
 
@@ -88,20 +113,4 @@ module.exports = {
   plugins: [vitePluginImp]
 }
 
-```
-
-## API Signature
-``` ts
-interface libItem {
-  // library name
-  libName: string
-  // component style file path
-  style: (name: string) => string
-  // default `es`
-  libDirectory?: string
-}
-
-interface ImpConfig {
-  libList: libItem[]
-}
 ```
