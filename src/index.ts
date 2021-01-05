@@ -1,7 +1,5 @@
 import { Plugin } from 'vite'
-import { importServerPluginCreator } from './serverPlugin'
-import { importTransformCreator } from './transform'
-import { ImpConfig, log } from './shared'
+import { ImpConfig, log, addImportToCode, codeIncludesLibraryName } from './shared'
 import chalk from 'chalk'
 
 const optionsCheck = (options: ImpConfig) => {
@@ -12,15 +10,21 @@ const optionsCheck = (options: ImpConfig) => {
   return false
 }
 
-const pluginCreator = (options: ImpConfig) => {
-  if (!optionsCheck(options)) {
-    return {}
+export default function vitePluginImp(config: ImpConfig): Plugin {
+  const name = 'vite-plugin-imp'
+  if (!optionsCheck(config)) {
+    return { name }
   }
-  const plugin: Plugin = {
-    configureServer: importServerPluginCreator(options),
-    transforms: [importTransformCreator(options)]
+  return {
+    name,
+    transform(code, id) {
+      if (!/(node_modules)/.test(id) && codeIncludesLibraryName(code, config.libList)) {
+        return {
+          code: addImportToCode(code, config),
+          map: null
+        }
+      }
+      return code
+    }
   }
-  return plugin
 }
-
-export = pluginCreator

@@ -15,7 +15,9 @@ export function streamToString (stream: Stream) {
 }
 
 export interface libItem {
+  // library name
   libName: string
+  // component style file path
   style: (name: string) => string
   // default `es`
   libDirectory?: string
