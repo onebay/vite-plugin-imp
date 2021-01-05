@@ -20,12 +20,20 @@ export default defineConfig({
   plugins: [
     vue(), 
     vitePluginImp({
-      libList: [{
-        libName: 'vant',
-        style(name) {
-          return `vant/es/${name}/index.css`
+      libList: [
+        {
+          libName: 'vant',
+          style(name) {
+            return `vant/es/${name}/index.css`
+          }
+        },
+        {
+          libName: 'element-plus',
+          style: (name) => {
+            return`element-plus/lib/theme-chalk/el-${name.slice(2)}.css`
+          }
         }
-      }]
+      ]
     })
   ]
 })
@@ -36,11 +44,17 @@ just use the component like below, component style will be auto injected.
 ``` tsx
 import { defineComponent } from 'vue'
 import { Progress } from 'vant'
+import { ElButton } from 'element-plus'
 
 export default defineComponent({
   setup() {
     return () => {
-      return (<Progress percentage={3} />)
+      return (
+        <div>
+          <Progress percentage={3} />
+          <ElButton>element-plus button</ElButton>
+        </div>
+      )
     }
   }
 })
@@ -62,7 +76,7 @@ const vitePluginImp = vitePluginImpCreator({
       }
     },
     {
-      libraryName: 'element-plusi',
+      libraryName: 'element-plus',
       style: (name) => {
         return`element-plus/lib/theme-chalk/el-${name.slice(2)}.css`
       }

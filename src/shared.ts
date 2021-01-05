@@ -1,5 +1,4 @@
 import * as parser from '@babel/parser'
-import { transformSync } from '@babel/core'
 import { Stream } from "stream"
 import generate from "@babel/generator"
 import chalk from 'chalk'
@@ -93,28 +92,15 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
   return { importMaps, codeRemoveOriginImport }
 }
 
-export const transform = (code: string) => transformSync(code, {
-  presets: [
-    [
-      "@babel/preset-env",
-      {
-        "modules": false
-      }
-    ]
-  ]
-})
-
 export const codeIncludesLibraryName = (code: string, libList: ImpConfig['libList']) => {
   return !libList.every(({ libName }) => {
     return !new RegExp(`('${libName}')|("${libName}")`).test(code);
   });
 }
 
-export const addImportToCode = (code: string, impConfig: ImpConfig) => {
-  const transformResult = transform(code)
-  const transformCode = transformResult?.code || code
+export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImport = false) => {
 
-  const { importMaps, codeRemoveOriginImport } = parseImportModule(transformCode, impConfig.libList)
+  const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList)
   
   let importStr = ''
 
@@ -125,10 +111,10 @@ export const addImportToCode = (code: string, impConfig: ImpConfig) => {
       })
     }
   })
-  if (impConfig.optimize) {
+  if (removeoldImport) {
     return `${importStr}${codeRemoveOriginImport}`
   }
-  return `${importStr}${transformCode}`
+  return `${importStr}${code}`
 } 
 
 export const log = (...args: any[]) => {
