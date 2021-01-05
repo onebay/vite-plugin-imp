@@ -1,6 +1,6 @@
 # vite-plugin-imp
 
-A vite plugin for import style automatic.
+A vite plugin for import library component style automatic.  
 ## install
 ```
 npm i vite-plugin-imp -D
@@ -31,7 +31,22 @@ export default defineConfig({
 })
 ```
 
-## V1.x Usage
+just use the component like below, component style will be auto injected.
+
+``` tsx
+import { defineComponent } from 'vue'
+import { Progress } from 'vant'
+
+export default defineComponent({
+  setup() {
+    return () => {
+      return (<Progress percentage={3} />)
+    }
+  }
+})
+```
+
+## plugin V1.x Usage
 
 ``` js
 // vite.config.js
