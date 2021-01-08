@@ -49,7 +49,7 @@ type Specifiers = {
 export function parseImportModule (code: string, libList: ImpConfig['libList']) {
   const ast = parser.parse(code, {
     sourceType: "module",
-  
+
     plugins: [
       // enable jsx and flow syntax
       "jsx"
@@ -57,7 +57,7 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
   });
 
   const astBody = ast.program.body
-  
+
   const importMaps: ImportMaps = {}
   const toBeRemoveIndex: number[] = []
   let newImportStatement = ''
@@ -101,12 +101,16 @@ export const codeIncludesLibraryName = (code: string, libList: ImpConfig['libLis
 export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImport = false) => {
 
   const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList)
-  
+
   let importStr = ''
 
   impConfig.libList.forEach(({libName, style}) => {
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
+        if (libName == "element-plus"){
+          item = item.replace(item[0],item[0].toLowerCase());
+          item = item.replace(/([A-Z])/g,"-$1");
+        }
         importStr += `import '${style(item.toLowerCase())}'\n`
       })
     }
@@ -115,7 +119,7 @@ export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImp
     return `${importStr}${codeRemoveOriginImport}`
   }
   return `${importStr}${code}`
-} 
+}
 
 export const log = (...args: any[]) => {
   args[0] = `${chalk.green('[vite-plugin-imp]')} ${args[0]}`
