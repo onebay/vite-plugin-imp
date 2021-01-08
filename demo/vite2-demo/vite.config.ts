@@ -9,7 +9,7 @@ export default defineConfig({
     jsxInject: `import { h } from 'vue'`
   },
   plugins: [
-    vue(), 
+    vue(),
     vitePluginImp({
       libList: [
         {
@@ -21,7 +21,7 @@ export default defineConfig({
         {
           libName: 'element-plus',
           style: (name) => {
-            return`element-plus/lib/theme-chalk/el-${name.slice(2)}.css`
+            return`element-plus/lib/theme-chalk/${name}.css`
           }
         },
         {

@@ -103,7 +103,7 @@ const vitePluginImp = vitePluginImpCreator({
     {
       libraryName: 'element-plus',
       style: (name) => {
-        return`element-plus/lib/theme-chalk/el-${name.slice(2)}.css`
+        return`element-plus/lib/theme-chalk/${name}.css`
       }
     }
   ]
