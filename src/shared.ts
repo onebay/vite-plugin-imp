@@ -108,8 +108,7 @@ export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImp
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
         if (libName == "element-plus"){
-          item = item.replace(item[0],item[0].toLowerCase());
-          item = item.replace(/([A-Z])/g,"-$1");
+          item = paramCase(item)
         }
         importStr += `import '${style(item.toLowerCase())}'\n`
       })
