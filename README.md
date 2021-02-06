@@ -20,11 +20,11 @@ export default defineConfig({
 
 config is ImpConfig
 ``` ts
-interface libItem {
+export interface libItem {
   // library name
   libName: string
   // component style file path
-  style: (name: string) => string
+  style: (name: string) => string | string[] | boolean
   // default `es`
   libDirectory?: string
 }
@@ -48,7 +48,24 @@ export default defineConfig({
         {
           libName: 'vant',
           style(name) {
+            if (/CompWithoutStyleFile/i.test(name)) {
+              // This will not import any style file 
+              return false
+            }
             return `vant/es/${name}/index.css`
+          }
+        },
+        {
+          libName: 'ant-design-vue',
+          style(name) {
+            if (/popconfirm/.test(name)) {
+              // support multiple style file path to import
+              return [
+                'ant-design-vue/es/button/style/index.css',
+                'ant-design-vue/es/popover/style/index.css'
+              ]
+            }
+            return `ant-design-vue/es/${name}/style/index.css`
           }
         },
         {
@@ -85,7 +102,7 @@ export default defineComponent({
 })
 ```
 
-## plugin V1.x Usage
+## plugin V1.x (No more updates) Usage 
 
 ``` js
 // vite.config.js

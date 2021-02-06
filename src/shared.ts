@@ -1,23 +1,13 @@
 import * as parser from '@babel/parser'
-import { Stream } from "stream"
 import generate from "@babel/generator"
 import chalk from 'chalk'
 import { paramCase } from 'param-case'
-
-export function streamToString (stream: Stream) {
-  const chunks: Uint8Array[] = []
-  return new Promise((resolve, reject) => {
-    stream.on('data', chunk => chunks.push(chunk))
-    stream.on('error', reject)
-    stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')))
-  })
-}
 
 export interface libItem {
   // library name
   libName: string
   // component style file path
-  style: (name: string) => string
+  style: (name: string) => string | string[] | boolean
   // default `es`
   libDirectory?: string
 }
@@ -46,6 +36,9 @@ type Specifiers = {
   }
 }
 
+const isArray = Array.isArray
+const isString = (str: unknown) => (typeof str === 'string')
+
 export function parseImportModule (code: string, libList: ImpConfig['libList']) {
   const ast = parser.parse(code, {
     sourceType: "module",
@@ -61,10 +54,12 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
   const importMaps: ImportMaps = {}
   const toBeRemoveIndex: number[] = []
   let newImportStatement = ''
-  if (Array.isArray(astBody)) {
+  /* istanbul ignore else */
+  if (isArray(astBody)) {
     astBody.forEach((astNode, index) => {
       const libName = (astNode as AstNode)?.source?.value || ''
       const matchLib = libList.find(lib => lib.libName === libName)
+      /* istanbul ignore else */
       if (astNode.type === 'ImportDeclaration' && matchLib) {
         astNode.specifiers.forEach((item) => {
           const name = (item as Specifiers)?.imported.name
@@ -98,6 +93,19 @@ export const codeIncludesLibraryName = (code: string, libList: ImpConfig['libLis
   });
 }
 
+export const stylePathHandler = (stylePath: string | string[] | boolean) => {
+  // for some case: when the component does not have a style file to import
+  let str = ''
+  if (isString(stylePath) && stylePath) {
+    str += `import '${stylePath}'\n`
+  } else if (isArray(stylePath)) {
+    stylePath.forEach(item => {
+      str += `import '${item}'\n`
+    })
+  }
+  return str
+}
+
 export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImport = false) => {
 
   const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList)
@@ -107,10 +115,13 @@ export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImp
   impConfig.libList.forEach(({libName, style}) => {
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
-        if (libName == "element-plus"){
+        if (libName === 'element-plus') {
           item = paramCase(item)
         }
-        importStr += `import '${style(item.toLowerCase())}'\n`
+        
+        let stylePath = style(item.toLowerCase())
+        const styleImportString = stylePathHandler(stylePath)
+        importStr += styleImportString
       })
     }
   })
