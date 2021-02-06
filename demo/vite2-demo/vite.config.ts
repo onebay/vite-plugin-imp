@@ -27,6 +27,9 @@ export default defineConfig({
         {
           libName: 'ant-design-vue',
           style(name) {
+            if (/popconfirm/.test(name)) {
+              return `ant-design-vue/es/popover/style/index.css`
+            }
             return `ant-design-vue/es/${name}/style/index.css`
           }
         }
