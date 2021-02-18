@@ -10,15 +10,17 @@
   >
     <a href="#">Delete</a>
   </Popconfirm>
+  <InputNumber />
 </template>
 <script>
-import { Button, Popconfirm, message } from 'ant-design-vue'
+import { Button, Popconfirm, message, InputNumber } from 'ant-design-vue'
 
 export default {
   name: 'AntDesignVueDemo',
   components: {
     Button,
-    Popconfirm
+    Popconfirm,
+    InputNumber
   },
   methods: {
     confirm(e) {

@@ -1,3 +1,6 @@
+## [2.0.4] (2021-02-18)
+* support camel2DashComponentName option
+
 ## [2.0.2](https://github.com/onebay/vite-plugin-imp/compare/v1.0.2...v2.0.2) (2021-01-08)
 
 

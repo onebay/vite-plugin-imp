@@ -10,6 +10,7 @@ export interface libItem {
   style: (name: string) => string | string[] | boolean
   // default `es`
   libDirectory?: string
+  camel2DashComponentName?: boolean
 }
 
 export interface ImpConfig {
@@ -112,14 +113,13 @@ export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImp
 
   let importStr = ''
 
-  impConfig.libList.forEach(({libName, style}) => {
+  impConfig.libList.forEach(({libName, style, camel2DashComponentName = true}) => {
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
-        if (libName === 'element-plus') {
+        if (camel2DashComponentName) {
           item = paramCase(item)
         }
-        
-        let stylePath = style(item.toLowerCase())
+        let stylePath = style(item)
         const styleImportString = stylePathHandler(stylePath)
         importStr += styleImportString
       })

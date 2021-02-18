@@ -102,6 +102,20 @@ export default defineComponent({
 })
 ```
 
+You can set camel2DashComponentName to false to disable transfer from camel to dash:
+``` ts
+vitePluginImp({
+  libList: [
+    {
+      libName: 'custom-lib',
+      camel2DashComponentName: false, // default true
+      style: (name) => {
+        return`custom-lib/lib/${name}/index.css`
+      }
+    }
+  ]
+})
+```
 ## plugin V1.x (No more updates) Usage 
 
 ``` js
