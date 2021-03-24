@@ -24,12 +24,16 @@ export default function vitePluginImp(config: ImpConfig): Plugin {
     },
     transform(code, id) {
       if (!/(node_modules)/.test(id) && codeIncludesLibraryName(code, config.libList)) {
+        const sourcemap = this?.getCombinedSourcemap()
         return {
           code: addImportToCode(code, config, viteConfig.command === 'build'),
-          map: null
+          map: sourcemap
         }
       }
-      return code
+      return {
+        code,
+        map: null
+      }
     }
   }
 }
