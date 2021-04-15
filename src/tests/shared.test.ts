@@ -12,7 +12,7 @@ describe('Test parseImportModule', () => {
           return `onebay/es/${name}/index.css`
         }
       }
-    ])
+    ], 'build')
     expect(codeRemoveOriginImport.indexOf(`import Button from 'onebay/es/button'`) >= 0).toBeTruthy()
     expect(importMaps.onebay.includes('Button')).toBeTruthy()
   })

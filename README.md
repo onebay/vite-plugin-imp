@@ -20,13 +20,27 @@ export default defineConfig({
 
 config is ImpConfig
 ``` ts
-export interface libItem {
-  // library name
+eexport interface LibItem {
+  /**
+   * library name
+   */
   libName: string
-  // component style file path
+  /**
+   * component style file path
+   */
   style: (name: string) => string | string[] | boolean
-  // default `es`
+  /**
+   * default `es`
+   */
   libDirectory?: string
+  /**
+   * whether convert component name from camel to dash
+   */
+  camel2DashComponentName?: boolean
+  /**
+   * whether replace old import statement, only work in command === serve
+   */
+  replaceOldImport?: boolean
 }
 
 interface ImpConfig {
@@ -41,6 +55,9 @@ import vue from '@vitejs/plugin-vue'
 import vitePluginImp from 'vite-plugin-imp'
 
 export default defineConfig({
+  optimizeDeps: {
+    entries: 'vant/es/**/*.js'
+  },
   plugins: [
     vue(), 
     vitePluginImp({
@@ -52,7 +69,7 @@ export default defineConfig({
               // This will not import any style file 
               return false
             }
-            return `vant/es/${name}/index.css`
+            return `vant/es/${name}/style/index.js`
           }
         },
         {

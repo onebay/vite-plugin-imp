@@ -2,20 +2,34 @@ import * as parser from '@babel/parser'
 import generate from "@babel/generator"
 import chalk from 'chalk'
 import { paramCase } from 'param-case'
+import { ResolvedConfig } from 'vite'
 
-export interface libItem {
-  // library name
+export interface LibItem {
+  /**
+   * library name
+   */
   libName: string
-  // component style file path
+  /**
+   * component style file path
+   */
   style: (name: string) => string | string[] | boolean
-  // default `es`
+  /**
+   * default `es`
+   */
   libDirectory?: string
+  /**
+   * whether convert component name from camel to dash
+   */
   camel2DashComponentName?: boolean
+  /**
+   * whether replace old import statement, only work in command === serve
+   */
+  replaceOldImport?: boolean
 }
 
 export interface ImpConfig {
   optimize?: boolean
-  libList: libItem[]
+  libList: LibItem[]
 }
 
 export interface ImportMaps {
@@ -40,7 +54,11 @@ type Specifiers = {
 const isArray = Array.isArray
 const isString = (str: unknown) => (typeof str === 'string')
 
-export function parseImportModule (code: string, libList: ImpConfig['libList']) {
+export function parseImportModule (
+  code: string, 
+  libList: ImpConfig['libList'], 
+  command: ResolvedConfig['command']
+) {
   const ast = parser.parse(code, {
     sourceType: "module",
 
@@ -62,6 +80,7 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
       const matchLib = libList.find(lib => lib.libName === libName)
       /* istanbul ignore else */
       if (astNode.type === 'ImportDeclaration' && matchLib) {
+        const { camel2DashComponentName = true } = matchLib
         astNode.specifiers.forEach((item) => {
           const name = (item as Specifiers)?.imported.name
           const localName = (item as Specifiers)?.local.name
@@ -69,8 +88,11 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
             return
           }
           const libDirectory = matchLib?.libDirectory || 'es'
-          newImportStatement += `import ${localName} from '${libName}/${libDirectory}/${paramCase(name)}'\n`
-          toBeRemoveIndex.push(index)
+          if (command === 'build' || matchLib?.replaceOldImport) {
+            const finalName = camel2DashComponentName ? paramCase(name) : name
+            newImportStatement += `import ${localName} from '${libName}/${libDirectory}/${finalName}'\n`
+            toBeRemoveIndex.push(index)
+          }
           if (importMaps[libName]) {
             importMaps[libName].push(name)
           } else {
@@ -85,6 +107,7 @@ export function parseImportModule (code: string, libList: ImpConfig['libList']) 
 
   let codeRemoveOriginImport = generate(ast).code
   codeRemoveOriginImport = `${newImportStatement} \n ${codeRemoveOriginImport}`
+
   return { importMaps, codeRemoveOriginImport }
 }
 
@@ -107,9 +130,13 @@ export const stylePathHandler = (stylePath: string | string[] | boolean) => {
   return str
 }
 
-export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImport = false) => {
+export const addImportToCode = (
+  code: string, 
+  impConfig: ImpConfig, 
+  command: ResolvedConfig['command'] = 'serve'
+) => {
 
-  const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList)
+  const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList, command)
 
   let importStr = ''
 
@@ -125,10 +152,8 @@ export const addImportToCode = (code: string, impConfig: ImpConfig, removeoldImp
       })
     }
   })
-  if (removeoldImport) {
-    return `${importStr}${codeRemoveOriginImport}`
-  }
-  return `${importStr}${code}`
+
+  return `${importStr}${codeRemoveOriginImport}`
 }
 
 export const log = (...args: any[]) => {
