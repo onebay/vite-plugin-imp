@@ -1,3 +1,6 @@
+## [2.0.6] (2021-04-16)
+* support replaceOldImport option
+
 ## [2.0.4] (2021-02-18)
 * support camel2DashComponentName option
 
