@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-// import vitePluginImp from '../../dist/index'
-const vitePluginImp = require('../../dist/index')
+import vitePluginImp from 'vite-plugin-imp'
 
 export default defineConfig({
   esbuild: {
@@ -22,6 +21,9 @@ export default defineConfig({
         {
           libName: 'element-plus',
           libDirectory: 'es/components',
+          nameFormatter: (name) => {
+            return name.replace('el-', '')
+          },
           style: (name) => {
             if (['el-config-provider', 'effect'].includes(name)) return false;
             return `element-plus/es/components/${name.replace('el-', '')}/style/css.js`;
@@ -35,7 +37,15 @@ export default defineConfig({
             }
             return `ant-design-vue/es/${name}/style/index.css`
           }
-        }
+        },
+        {
+          libName: 'lodash',
+          libDirectory: '',
+          camel2DashComponentName: false,
+          style: () => {
+            return false;
+          },
+        },
       ]
     })
   ]

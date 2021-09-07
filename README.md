@@ -1,6 +1,31 @@
 # vite-plugin-imp
 
-A vite plugin for import library component style automatic.  
+- A vite plugin for import ui library component style automatic.  
+- It can also import library like lodash on demand.  
+
+``` js
+import { forEach } from 'lodash'
+
+forEach([1,2], console.log)
+```
+to  
+```js
+import forEach from 'lodash/forEach'
+
+forEach([1,2], console.log)
+```
+<hr/>
+
+``` js
+import { Progress } from 'vant'
+```
+to
+``` js
+import { Progress } from 'vant'
+import 'vant/es/progress/style/index.js'
+```
+
+
 ## install
 ```
 npm i vite-plugin-imp -D
@@ -63,6 +88,14 @@ export default defineConfig({
     vitePluginImp({
       libList: [
         {
+          libName: 'lodash',
+          libDirectory: '',
+          camel2DashComponentName: false,
+          style: () => {
+            return false;
+          },
+        },
+        {
           libName: 'vant',
           style(name) {
             if (/CompWithoutStyleFile/i.test(name)) {
@@ -85,12 +118,23 @@ export default defineConfig({
             return `ant-design-vue/es/${name}/style/index.css`
           }
         },
-        {
+        {// for element-plus < v1.1
           libName: 'element-plus',
           style: (name) => {
             return`element-plus/lib/theme-chalk/${name}.css`
           }
-        }
+        },
+        {// for element-plus >= v1.1
+          libName: 'element-plus',
+          libDirectory: 'es/components',
+          nameFormatter: (name) => {
+            return name.replace('el-', '')
+          },
+          style: (name) => {
+            if (['el-config-provider', 'effect'].includes(name)) return false;
+            return `element-plus/es/components/${name.replace('el-', '')}/style/css.js`;
+          },
+        },
       ]
     })
   ]
