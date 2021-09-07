@@ -1,3 +1,12 @@
+## [2.0.8](https://github.com/onebay/vite-plugin-imp/compare/v2.0.7...v2.0.8) (2021-09-07)
+
+
+### Features
+
+* support nameFormatter ([932ef01](https://github.com/onebay/vite-plugin-imp/commit/932ef013c450ed1fd94aff6cbe591b4cea8fc1b9))
+
+
+
 ## [2.0.6] (2021-04-16)
 * support replaceOldImport option
 
