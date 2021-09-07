@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vitePluginImp from 'vite-plugin-imp'
+// import vitePluginImp from '../../dist/index'
+const vitePluginImp = require('../../dist/index')
 
 export default defineConfig({
   esbuild: {
@@ -20,9 +21,11 @@ export default defineConfig({
         },
         {
           libName: 'element-plus',
+          libDirectory: 'es/components',
           style: (name) => {
-            return`element-plus/lib/theme-chalk/${name}.css`
-          }
+            if (['el-config-provider', 'effect'].includes(name)) return false;
+            return `element-plus/es/components/${name.replace('el-', '')}/style/css.js`;
+          },
         },
         {
           libName: 'ant-design-vue',

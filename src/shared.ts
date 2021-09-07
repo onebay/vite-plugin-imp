@@ -25,6 +25,10 @@ export interface LibItem {
    * whether replace old import statement, only work in command === serve
    */
   replaceOldImport?: boolean
+  /**
+   * imported name formatter
+   */
+  nameFormatter?: (name: string, importedName: string) => string
 }
 
 export interface ImpConfig {
@@ -87,9 +91,12 @@ export function parseImportModule (
           if(!name) {
             return
           }
-          const libDirectory = matchLib?.libDirectory || 'es'
+          const libDirectory = typeof matchLib?.libDirectory === 'string' ? matchLib?.libDirectory : 'es'
           if (command === 'build' || matchLib?.replaceOldImport) {
-            const finalName = camel2DashComponentName ? paramCase(name) : name
+            let finalName = camel2DashComponentName ? paramCase(name) : name
+            if (matchLib.nameFormatter) {
+              finalName = matchLib?.nameFormatter?.(finalName, name)
+            }
             newImportStatement += `import ${localName} from '${libName}/${libDirectory}/${finalName}'\n`
             toBeRemoveIndex.push(index)
           }
