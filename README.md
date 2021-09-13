@@ -45,7 +45,7 @@ export default defineConfig({
 
 config is ImpConfig
 ``` ts
-eexport interface LibItem {
+export interface LibItem {
   /**
    * library name
    */
