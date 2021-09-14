@@ -91,13 +91,14 @@ export function parseImportModule (
           if(!name) {
             return
           }
-          const libDirectory = typeof matchLib?.libDirectory === 'string' ? `${matchLib?.libDirectory}/` : 'es/'
+          const { libDirectory = 'es' } = matchLib
+          const libDir = libDirectory ? `${libDirectory}/` : ''
           if (command === 'build' || matchLib?.replaceOldImport) {
             let finalName = camel2DashComponentName ? paramCase(name) : name
             if (matchLib.nameFormatter) {
               finalName = matchLib?.nameFormatter?.(finalName, name)
             }
-            newImportStatement += `import ${localName} from '${libName}/${libDirectory}${finalName}'\n`
+            newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}'\n`
             toBeRemoveIndex.push(index)
           }
           if (importMaps[libName]) {

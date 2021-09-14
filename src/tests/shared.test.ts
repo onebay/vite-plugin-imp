@@ -16,6 +16,20 @@ describe('Test parseImportModule', () => {
     expect(codeRemoveOriginImport.indexOf(`import Button from 'onebay/es/button'`) >= 0).toBeTruthy()
     expect(importMaps.onebay.includes('Button')).toBeTruthy()
   })
+
+  it ('import onebay Button & tree shaking libDirectory == ""', () => {
+    const { importMaps, codeRemoveOriginImport } = parseImportModule(code, [
+      {
+        libName: 'onebay',
+        libDirectory: '',
+        style(name) {
+          return `onebay/es/${name}/index.css`
+        }
+      }
+    ], 'build')
+    expect(codeRemoveOriginImport.indexOf(`import Button from 'onebay/button'`) >= 0).toBeTruthy()
+    expect(importMaps.onebay.includes('Button')).toBeTruthy()
+  })
 })
 
 describe('Test style function', () => {
