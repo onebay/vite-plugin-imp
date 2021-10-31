@@ -98,7 +98,7 @@ export function parseImportModule (
             if (matchLib.nameFormatter) {
               finalName = matchLib?.nameFormatter?.(finalName, name)
             }
-            newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}'\n`
+            newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}';`
             toBeRemoveIndex.push(index)
           }
           if (importMaps[libName]) {
@@ -114,7 +114,7 @@ export function parseImportModule (
   ast.program.body = astBody.filter((item, index) => !toBeRemoveIndex.includes(index))
 
   let codeRemoveOriginImport = generate(ast).code
-  codeRemoveOriginImport = `${newImportStatement} \n ${codeRemoveOriginImport}`
+  codeRemoveOriginImport = `${newImportStatement} ; ${codeRemoveOriginImport}`
 
   return { importMaps, codeRemoveOriginImport }
 }
@@ -129,10 +129,10 @@ export const stylePathHandler = (stylePath: string | string[] | boolean) => {
   // for some case: when the component does not have a style file to import
   let str = ''
   if (isString(stylePath) && stylePath) {
-    str += `import '${stylePath}'\n`
+    str += `import '${stylePath}';`
   } else if (isArray(stylePath)) {
     stylePath.forEach(item => {
-      str += `import '${item}'\n`
+      str += `import '${item}';`
     })
   }
   return str

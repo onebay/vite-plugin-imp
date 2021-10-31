@@ -36,7 +36,7 @@ describe('Test style function', () => {
   it ('stylePath is string', () => {
     const testPath = 'onebay/es/button/index.css'
     const result = stylePathHandler(testPath)
-    const isEqual = result === `import '${testPath}'\n`
+    const isEqual = result === `import '${testPath}';`
     expect(isEqual).toBeTruthy()
   })
 
@@ -53,8 +53,8 @@ describe('Test style function', () => {
       'onebay/es/modal/index.css'
     ]
     const result = stylePathHandler(testPath)
-    const p0 = `import '${testPath[0]}'\n`
-    const p1 = `import '${testPath[1]}'\n`
+    const p0 = `import '${testPath[0]}';`
+    const p1 = `import '${testPath[1]}';`
     expect(result.indexOf(p0) > -1).toBeTruthy()
     expect(result.indexOf(p1) > -1).toBeTruthy()
   })
@@ -75,9 +75,8 @@ describe('Test addImportToCode', () => {
         }
       ]
     })
-    
-    expect(result.indexOf(`import 'onebay/es/button/index.css'\n`) >= 0).toBeTruthy()
-    expect(result.indexOf(`import 'onebay/es/modal/index.css'\n`) >= 0).toBeTruthy()
+    expect(result.indexOf(`import 'onebay/es/button/index.css';`) >= 0).toBeTruthy()
+    expect(result.indexOf(`import 'onebay/es/modal/index.css';`) >= 0).toBeTruthy()
   })
 })
 
@@ -112,4 +111,3 @@ describe('Test codeIncludesLibraryName', () => {
     expect(result).toBeFalsy()
   })
 })
-
