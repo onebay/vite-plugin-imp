@@ -1,9 +1,7 @@
 import { stylePathHandler, parseImportModule, addImportToCode, codeIncludesLibraryName } from '../shared'
 
 describe('Test parseImportModule', () => {
-  const code = `
-    import { Button } from 'onebay' 
-  `
+  const code = `import { Button } from 'onebay'`
   it ('import onebay Button & tree shaking', () => {
     const { importMaps, codeRemoveOriginImport } = parseImportModule(code, [
       {
@@ -28,6 +26,21 @@ describe('Test parseImportModule', () => {
       }
     ], 'build')
     expect(codeRemoveOriginImport.indexOf(`import Button from 'onebay/button'`) >= 0).toBeTruthy()
+    expect(importMaps.onebay.includes('Button')).toBeTruthy()
+  })
+
+  it ('import onebay Button & replaceOldImport = false', () => {
+    const { importMaps, codeRemoveOriginImport } = parseImportModule(code, [
+      {
+        libName: 'onebay',
+        style(name) {
+          return `onebay/es/${name}/index.css`
+        },
+        replaceOldImport: false
+      }
+    ], 'build')
+    
+    expect(codeRemoveOriginImport.indexOf(code) >= 0).toBeTruthy()
     expect(importMaps.onebay.includes('Button')).toBeTruthy()
   })
 })

@@ -22,7 +22,8 @@ export interface LibItem {
    */
   camel2DashComponentName?: boolean
   /**
-   * whether replace old import statement, only work in command === serve
+   * whether replace old import statement, default `command === 'build'`,
+   * that means in vite serve default to `false`, in vite build default to `ture`
    */
   replaceOldImport?: boolean
   /**
@@ -84,16 +85,15 @@ export function parseImportModule (
       const matchLib = libList.find(lib => lib.libName === libName)
       /* istanbul ignore else */
       if (astNode.type === 'ImportDeclaration' && matchLib) {
-        const { camel2DashComponentName = true } = matchLib
+        const { camel2DashComponentName = true, libDirectory = 'es', replaceOldImport = command === 'build' } = matchLib
         astNode.specifiers.forEach((item) => {
           const name = (item as Specifiers)?.imported.name
           const localName = (item as Specifiers)?.local.name
           if(!name) {
             return
           }
-          const { libDirectory = 'es' } = matchLib
           const libDir = libDirectory ? `${libDirectory}/` : ''
-          if (command === 'build' || matchLib?.replaceOldImport) {
+          if (replaceOldImport) {
             let finalName = camel2DashComponentName ? paramCase(name) : name
             if (matchLib.nameFormatter) {
               finalName = matchLib?.nameFormatter?.(finalName, name)

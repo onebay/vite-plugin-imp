@@ -15,7 +15,7 @@ export default defineConfig({
         {
           libName: 'vant',
           style(name) {
-            return `vant/es/${name}/index.css`
+            return `vant/es/${name}/style/index.js`
           }
         },
         {
