@@ -63,7 +63,8 @@ export interface LibItem {
    */
   camel2DashComponentName?: boolean
   /**
-   * whether replace old import statement, only work in command === serve
+   * whether replace old import statement, default `command === 'build'`,
+   * that means in vite serve default to `false`, in vite build default to `ture`
    */
   replaceOldImport?: boolean
 }
