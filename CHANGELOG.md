@@ -1,9 +1,10 @@
-## [2.0.10](https://github.com/onebay/vite-plugin-imp/compare/v2.0.7...v2.0.10) (2021-10-31)
+## [2.0.11](https://github.com/onebay/vite-plugin-imp/compare/v2.0.7...v2.0.11) (2021-12-11)
 
 
 ### Bug Fixes
 
 * [#15](https://github.com/onebay/vite-plugin-imp/issues/15) ([273e5f5](https://github.com/onebay/vite-plugin-imp/commit/273e5f58a9be72aa70697bc05100541baf744bc5))
+* [#17](https://github.com/onebay/vite-plugin-imp/issues/17) ([1a83d5b](https://github.com/onebay/vite-plugin-imp/commit/1a83d5ba9a03195b812d204adcead48455c6fc77))
 * libDirectory is empty string ([a18fa0a](https://github.com/onebay/vite-plugin-imp/commit/a18fa0a02706579e3bddb1ae2847a28b61eb33cb))
 * typo ([39c0c60](https://github.com/onebay/vite-plugin-imp/commit/39c0c6071e4c4829df9117f15df8effbf92fbf6b))
 
