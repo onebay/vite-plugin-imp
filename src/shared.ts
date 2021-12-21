@@ -35,6 +35,7 @@ export interface LibItem {
 export interface ImpConfig {
   optimize?: boolean
   libList: LibItem[]
+  exclude?: string[]
 }
 
 export interface ImportMaps {
