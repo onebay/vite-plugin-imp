@@ -1,13 +1,13 @@
 {
   "name": "vite-plugin-imp",
-  "version": "2.0.10",
+  "version": "2.0.11",
   "description": "A vite plugin for import style automatic",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsc -w -p .",
     "build": "rm -rf dist && tsc -p .",
     "prepublishOnly": "yarn build",
-    "genlog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+    "genlog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "test": "jest ./src"
   },
   "keywords": [
