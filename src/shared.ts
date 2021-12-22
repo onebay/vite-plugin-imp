@@ -12,13 +12,13 @@ export interface LibItem {
   /**
    * component style file path
    */
-  style: (name: string) => string | string[] | boolean
+  style?: (name: string) => string | string[] | boolean
   /**
    * default `es`
    */
   libDirectory?: string
   /**
-   * whether convert component name from camel to dash
+   * whether convert component name from camel to dash, default `true`
    */
   camel2DashComponentName?: boolean
   /**
@@ -35,6 +35,9 @@ export interface LibItem {
 export interface ImpConfig {
   optimize?: boolean
   libList: LibItem[]
+  /**
+   * exclude the library from defaultLibList
+   */
   exclude?: string[]
 }
 
@@ -149,7 +152,7 @@ export const addImportToCode = (
 
   let importStr = ''
 
-  impConfig.libList.forEach(({libName, style, camel2DashComponentName = true}) => {
+  impConfig.libList.forEach(({libName, style = () => false, camel2DashComponentName = true}) => {
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
         if (camel2DashComponentName) {

@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vitePluginImp from 'vite-plugin-imp'
+import { visualizer } from 'rollup-plugin-visualizer'
+
+const { ANALYZE } = process.env;
 
 export default defineConfig({
   esbuild: {
@@ -47,6 +50,7 @@ export default defineConfig({
           },
         },
       ]
-    })
-  ]
+    }),
+    ANALYZE === '1' ? visualizer({ open: true, filename: 'visualizer/stat.html' }) : null,
+  ].filter(Boolean)
 })

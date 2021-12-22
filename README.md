@@ -71,9 +71,34 @@ export interface LibItem {
 
 interface ImpConfig {
   libList: libItem[]
+  /**
+   * exclude the library from defaultLibList
+   */
+  exclude?: string[]
 }
 ```
 
+# Support popular library
+- antd
+- ant-design-vue
+- element-plus
+- element-ui
+- lodash
+- underscore
+- vant
+- vuetify
+
+If your project is using libraries that mentioned above, you just need use it like: 
+```ts
+export default defineConfig({
+  plugins: [
+    // ...
+    vitePluginImp()
+  ]
+})
+```
+
+## More libraries usage
 ```js
 // vite.config.js
 import { defineConfig } from 'vite'
