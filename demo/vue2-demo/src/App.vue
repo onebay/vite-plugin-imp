@@ -16,7 +16,7 @@ import {
   VAvatar,
   VApp
 } from 'vuetify'
-// console.log(`VApp`, VApp)
+console.log(`VApp`, VApp)
 export default {
   components: {
     ElButton: Button,

@@ -14,18 +14,14 @@ const optionsCheck = (options: ImpConfig) => {
   return true
 }
 
-export default function vitePluginImp(config: ImpConfig): Plugin {
+export default function vitePluginImp(config: ImpConfig = { libList: [] }): Plugin {
   let viteConfig: ResolvedConfig
   const name = 'vite-plugin-imp'
   if (!optionsCheck(config)) {
     return { name }
   }
-  if (!config.libList?.length) {
-    config.libList = []
-  }
-  if (!config.exclude?.length) {
-    config.exclude = []
-  }
+  
+  config = Object.assign({ libList: [], exclude: [] }, config)
 
   const libListNameSet: Set<string> = new Set(config.libList.map(lib => lib.libName))
 
@@ -50,11 +46,10 @@ export default function vitePluginImp(config: ImpConfig): Plugin {
       // merge defaultLibFilteredList to config.libList
       defaultLibFilteredList.forEach(defaultLib => {
         if (!libListNameSet.has(defaultLib.libName)) {
-          config.libList.push(defaultLib)
+          config.libList?.push(defaultLib)
           libListNameSet.add(defaultLib.libName)
         }
       })
-      console.log(`config.libList`, config.libList)
     },
     transform(code, id) {
       if (!/(node_modules)/.test(id) && codeIncludesLibraryName(code, config.libList)) {
