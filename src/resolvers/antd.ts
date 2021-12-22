@@ -1,10 +1,9 @@
 import { LibItem } from '../shared'
 
-const antdResolver: LibItem = {
+export const AntdResolver: LibItem = {
   libName: 'antd',
   style(name) {
     return `antd/es/${name}/style/css.js`
   }
 }
 
-export default antdResolver

@@ -46,7 +46,8 @@
     "@babel/parser": "^7.12.11",
     "@babel/traverse": "^7.12.12",
     "chalk": "^4.1.0",
-    "param-case": "^3.0.4"
+    "param-case": "^3.0.4",
+    "pascal-case": "^3.1.2"
   },
   "husky": {
     "hooks": {
