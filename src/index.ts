@@ -1,7 +1,7 @@
 import { Plugin, ResolvedConfig } from 'vite'
 import { ImpConfig, log, addImportToCode, codeIncludesLibraryName } from './shared'
 import chalk from 'chalk'
-import defaultLibList from './defaultLibList'
+import defaultLibList from './resolvers'
 import * as path from 'path'
 import * as fs from 'fs'
 
