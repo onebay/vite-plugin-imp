@@ -1,27 +1,21 @@
 <template>
-  <v-app>
+  <div>
     <h2>vue2</h2>
     <el-button>ElButton</el-button>
-    <v-avatar
-      color="orange"
-      size="56"
-    >
-      VJ
-    </v-avatar>
-  </v-app>
+    <ViewUI />
+    <Vuetify />
+  </div>
 </template>
 <script>
 import { Button } from 'element-ui'
-import { 
-  VAvatar,
-  VApp
-} from 'vuetify'
-console.log(`VApp`, VApp)
+import ViewUI from './ViewUI.vue'
+import Vuetify from './Vuetify.vue'
+
 export default {
   components: {
     ElButton: Button,
-    'v-avatar': VAvatar,
-    'v-app': VApp
+    Vuetify,
+    ViewUI
   },
   beforeCreate() {
     console.log(`this.$vuetify`, this.$vuetify)
