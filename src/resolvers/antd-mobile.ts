@@ -1,6 +1,6 @@
-import { LibItem } from '../shared'
+import { LibResolver } from '../types'
 
-export const AntdMobileReactResolver: LibItem = {
+export const AntdMobileReactResolver: LibResolver = {
   libName: 'antd-mobile',
   style: (name) => `antd-mobile/es/${name}/style/css.js`
 }

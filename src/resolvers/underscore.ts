@@ -1,6 +1,6 @@
-import { LibItem } from '../shared'
+import { LibResolver } from '../types'
 
-export const UnderScoreResolver: LibItem = {
+export const UnderScoreResolver: LibResolver = {
   libName: 'underscore',
   libDirectory: 'module',
   camel2DashComponentName: false

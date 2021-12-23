@@ -3,47 +3,9 @@ import generate from "@babel/generator"
 import chalk from 'chalk'
 import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
-
-export interface LibItem {
-  /**
-   * library name
-   */
-  libName: string
-  /**
-   * component style file path
-   */
-  style?: (name: string) => string | string[] | boolean
-  /**
-   * default `es`
-   */
-  libDirectory?: string
-  /**
-   * whether convert component name from camel to dash, default `true`
-   */
-  camel2DashComponentName?: boolean
-  /**
-   * whether replace old import statement, default `command === 'build'`,
-   * that means in vite serve default to `false`, in vite build default to `ture`
-   */
-  replaceOldImport?: boolean
-  /**
-   * imported name formatter
-   */
-  nameFormatter?: (name: string, importedName: string) => string
-}
-
-export interface ImpConfig {
-  optimize?: boolean
-  libList: LibItem[]
-  /**
-   * exclude the library from defaultLibList
-   */
-  exclude?: string[]
-}
-
-export interface ImportMaps {
-  [key: string]: string[]
-}
+import { ImpConfig, ImportMaps } from './types'
+import path from 'path'
+import fs from 'fs'
 
 type AstNode = {
   source: {
@@ -129,14 +91,27 @@ export const codeIncludesLibraryName = (code: string, libList: ImpConfig['libLis
   });
 }
 
-export const stylePathHandler = (stylePath: string | string[] | boolean) => {
+const stylePathNotFoundHandler = (stylePath: string, root: string, ignoreStylePathNotFound: boolean) => {
+  if (ignoreStylePathNotFound) {
+    if (fs.existsSync(path.resolve(root, 'node_modules', stylePath as string))) {
+      return `import '${stylePath}';`
+    } else {
+      warn(`${stylePath} is not found!`)
+      warn('If you think this is a bug, feel free to open an issue on https://github.com/onebay/vite-plugin-imp/issues')
+      return ''
+    }
+  }
+  return `import '${stylePath}';`
+}
+
+export const stylePathHandler = (stylePath: string | string[] | boolean, root: string, ignoreStylePathNotFound: boolean = true) => {
   // for some case: when the component does not have a style file to import
   let str = ''
   if (isString(stylePath) && stylePath) {
-    str += `import '${stylePath}';`
+    str += stylePathNotFoundHandler(stylePath as string, root, ignoreStylePathNotFound)
   } else if (isArray(stylePath)) {
     stylePath.forEach(item => {
-      str += `import '${item}';`
+      str += stylePathNotFoundHandler(item, root, ignoreStylePathNotFound)
     })
   }
   return str
@@ -145,21 +120,23 @@ export const stylePathHandler = (stylePath: string | string[] | boolean) => {
 export const addImportToCode = (
   code: string, 
   impConfig: ImpConfig, 
-  command: ResolvedConfig['command'] = 'serve'
+  command: ResolvedConfig['command'],
+  root: string,
+  ignoreStylePathNotFound?: boolean
 ) => {
 
   const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList, command)
 
   let importStr = ''
 
-  impConfig.libList.forEach(({libName, style = () => false, camel2DashComponentName = true}) => {
+  impConfig.libList.forEach(({ libName, style = () => false, camel2DashComponentName = true }) => {
     if (importMaps[libName]) {
       importMaps[libName].forEach(item => {
         if (camel2DashComponentName) {
           item = paramCase(item)
         }
         let stylePath = style(item)
-        const styleImportString = stylePathHandler(stylePath)
+        const styleImportString = stylePathHandler(stylePath, root, ignoreStylePathNotFound)
         importStr += styleImportString
       })
     }
@@ -170,5 +147,9 @@ export const addImportToCode = (
 
 export const log = (...args: any[]) => {
   args[0] = `${chalk.green('[vite-plugin-imp]')} ${args[0]}`
+  console.log(...args)
+}
+export const warn = (...args: any[]) => {
+  args[0] = `${chalk.yellow('[vite-plugin-imp]')} ${args[0]}`
   console.log(...args)
 }
