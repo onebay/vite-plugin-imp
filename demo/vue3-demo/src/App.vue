@@ -2,18 +2,21 @@
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + Vite" />
   <AntDesignVue />
+  <ArcoDesignVue />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import AntDesignVue from './components/AntDesignVue.vue'
+import ArcoDesignVue from './components/ArcoDesignVue.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     HelloWorld,
-    AntDesignVue
+    AntDesignVue,
+    ArcoDesignVue
   }
 })
 </script>
