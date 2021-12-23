@@ -7,6 +7,7 @@
     "analyze": "cross-env ANALYZE=1 BUILD=test vite build --mode test"
   },
   "dependencies": {
+    "@arco-design/web-vue": "^2.11.1",
     "ant-design-vue": "^2.0.0-rc.9",
     "element-plus": "^1.1.0-beta.9",
     "indexof": "^0.0.1",
