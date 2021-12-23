@@ -1,6 +1,6 @@
-import { LibItem } from '../shared'
+import { LibResolver } from '../types'
 
-export const VuetifyResolver: LibItem = {
+export const VuetifyResolver: LibResolver = {
   libName: 'vuetify',
   libDirectory: 'lib/components',
   replaceOldImport: true,

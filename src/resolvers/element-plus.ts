@@ -1,6 +1,6 @@
-import { LibItem } from '../shared'
+import { LibResolver } from '../types'
 
-export const ElementPlusResolver: LibItem = {
+export const ElementPlusResolver: LibResolver = {
   libName: 'element-plus',
   libDirectory: 'es/components',
   nameFormatter: (name) => {

@@ -1,4 +1,4 @@
-import { LibItem } from '../shared'
+import { LibResolver } from '../types'
 import { pascalCase } from 'pascal-case'
 
 const components = [
@@ -91,7 +91,7 @@ const components = [
   'ElResult',
 ]
 
-export const ElementUIResolver: LibItem = {
+export const ElementUIResolver: LibResolver = {
   libName: 'element-ui',
   libDirectory: 'lib',
   style(name) {

@@ -1,12 +1,13 @@
 import { Plugin, ResolvedConfig } from 'vite'
-import { ImpConfig, log, addImportToCode, codeIncludesLibraryName } from './shared'
+import { log, addImportToCode, codeIncludesLibraryName } from './shared'
 import chalk from 'chalk'
 import defaultLibList from './resolvers'
 import * as path from 'path'
 import * as fs from 'fs'
+import { ImpConfig } from './types'
 
 
-const optionsCheck = (options: ImpConfig) => {
+const optionsCheck = (options: Partial<ImpConfig>) => {
   if (options?.libList && !Array.isArray(options?.libList)) {
     log(chalk.yellow(`libList is Array, please check your options!`))
     return false
@@ -14,23 +15,27 @@ const optionsCheck = (options: ImpConfig) => {
   return true
 }
 
-export default function vitePluginImp(config: ImpConfig = { libList: [] }): Plugin {
+export default function vitePluginImp(userConfig: Partial<ImpConfig>): Plugin {
   let viteConfig: ResolvedConfig
+  let config: ImpConfig
   const name = 'vite-plugin-imp'
-  if (!optionsCheck(config)) {
+  if (!optionsCheck(userConfig)) {
     return { name }
   }
   
-  config = Object.assign({ libList: [], exclude: [] }, config)
-
-  const libListNameSet: Set<string> = new Set(config.libList.map(lib => lib.libName))
-
   return {
     name,
     configResolved(resolvedConfig) {
       // store the resolved config
       viteConfig = resolvedConfig
 
+      config = Object.assign({ 
+        libList: [], 
+        exclude: [], 
+        ignoreStylePathNotFound: viteConfig.command === 'serve'
+      }, userConfig)
+    
+      const libListNameSet: Set<string> = new Set(config.libList.map(lib => lib.libName))
       // filter defaultLibList from exclude
       let defaultLibFilteredList = defaultLibList.filter(lib => !config.exclude?.includes(lib.libName))
 
@@ -55,7 +60,7 @@ export default function vitePluginImp(config: ImpConfig = { libList: [] }): Plug
       if (!/(node_modules)/.test(id) && codeIncludesLibraryName(code, config.libList)) {
         const sourcemap = this?.getCombinedSourcemap()
         return {
-          code: addImportToCode(code, config, viteConfig.command),
+          code: addImportToCode(code, config, viteConfig.command, viteConfig.root, config.ignoreStylePathNotFound),
           map: sourcemap
         }
       }
