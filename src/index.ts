@@ -15,7 +15,7 @@ const optionsCheck = (options: Partial<ImpConfig>) => {
   return true
 }
 
-export default function vitePluginImp(userConfig: Partial<ImpConfig>): Plugin {
+export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plugin {
   let viteConfig: ResolvedConfig
   let config: ImpConfig
   const name = 'vite-plugin-imp'
