@@ -43,7 +43,7 @@ export default defineConfig({
 })
 ```
 
-config is ImpConfig
+config interface is ImpConfig:
 ``` ts
 export interface LibItem {
   /**
@@ -78,15 +78,49 @@ interface ImpConfig {
 }
 ```
 
-# Support popular library
-- antd
-- ant-design-vue
-- element-plus
-- element-ui
-- lodash
-- underscore
-- vant
-- vuetify
+## More libraries usage
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vitePluginImp from 'vite-plugin-imp'
+
+export default defineConfig({
+  plugins: [
+    // ...
+    vitePluginImp({
+      libList: [
+        {
+          libName: 'lodash',
+          libDirectory: '',
+          camel2DashComponentName: false
+        },
+        {
+          libName: 'antd',
+          style(name) {
+            // use less
+            return `antd/es/${name}/style/index.js`
+          }
+        },
+      ]
+    })
+  ]
+})
+```
+
+## Built-in Support popular library
+- [antd-mobile](./src/resolvers/antd-mobile.ts)
+- [antd](./src/resolvers/antd.ts)
+- [ant-design-vue](./src/resolvers/antdv.ts)
+- [@arco-design/web-react](./src/resolvers/arco-design-react.ts)
+- [@arco-design/web-vue](./src/resolvers/arco-design-vue.ts)
+- [element-plus](./src/resolvers/element-plus.ts)
+- [element-ui](./src/resolvers/element-ui.ts)
+- [lodash](./src/resolvers/lodash.ts)
+- [underscore](./src/resolvers/underscore.ts)
+- [vant](./src/resolvers/vant.ts)
+- [view ui](./src/resolvers/view-ui.ts)
+- [vuetify](./src/resolvers/vuetify.ts)
 
 If your project is using libraries that mentioned above, you just need use it like: 
 ```ts
@@ -97,75 +131,7 @@ export default defineConfig({
   ]
 })
 ```
-
-## More libraries usage
-```js
-// vite.config.js
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vitePluginImp from 'vite-plugin-imp'
-
-export default defineConfig({
-  optimizeDeps: {
-    entries: 'vant/es/**/*.js'
-  },
-  plugins: [
-    vue(), 
-    vitePluginImp({
-      libList: [
-        {
-          libName: 'lodash',
-          libDirectory: '',
-          camel2DashComponentName: false,
-          style: () => {
-            return false;
-          },
-        },
-        {
-          libName: 'vant',
-          style(name) {
-            if (/CompWithoutStyleFile/i.test(name)) {
-              // This will not import any style file 
-              return false
-            }
-            return `vant/es/${name}/style/index.js`
-          }
-        },
-        {
-          libName: 'ant-design-vue',
-          style(name) {
-            if (/popconfirm/.test(name)) {
-              // support multiple style file path to import
-              return [
-                'ant-design-vue/es/button/style/index.css',
-                'ant-design-vue/es/popover/style/index.css'
-              ]
-            }
-            return `ant-design-vue/es/${name}/style/index.css`
-          }
-        },
-        {// for element-plus < v1.1
-          libName: 'element-plus',
-          style: (name) => {
-            return`element-plus/lib/theme-chalk/${name}.css`
-          }
-        },
-        {// for element-plus >= v1.1
-          libName: 'element-plus',
-          libDirectory: 'es/components',
-          nameFormatter: (name) => {
-            return name.replace('el-', '')
-          },
-          style: (name) => {
-            if (['el-config-provider', 'effect'].includes(name)) return false;
-            return `element-plus/es/components/${name.replace('el-', '')}/style/css.js`;
-          },
-        },
-      ]
-    })
-  ]
-})
-```
+If you want to support a library built-in, feel free to open a issue.
 
 
 just use the component like below, component style will be auto injected.
