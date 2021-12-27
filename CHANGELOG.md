@@ -1,10 +1,28 @@
-## [2.0.11](https://github.com/onebay/vite-plugin-imp/compare/v2.0.7...v2.0.11) (2021-12-11)
+# [2.1.0](https://github.com/onebay/vite-plugin-imp/compare/v2.0.9...v2.1.0) (2021-12-27)
 
 
 ### Bug Fixes
 
 * [#15](https://github.com/onebay/vite-plugin-imp/issues/15) ([273e5f5](https://github.com/onebay/vite-plugin-imp/commit/273e5f58a9be72aa70697bc05100541baf744bc5))
 * [#17](https://github.com/onebay/vite-plugin-imp/issues/17) ([1a83d5b](https://github.com/onebay/vite-plugin-imp/commit/1a83d5ba9a03195b812d204adcead48455c6fc77))
+
+
+### Features
+
+* add @arco-design/web-vue ([eb63626](https://github.com/onebay/vite-plugin-imp/commit/eb636267363723aecf4f8a70e803641846774011))
+* add arco-design ([34421ee](https://github.com/onebay/vite-plugin-imp/commit/34421eebb2786f718e930d8109b966de0bfb2f9c))
+* add defaultLibList ([1bddfd4](https://github.com/onebay/vite-plugin-imp/commit/1bddfd4fdc5e4c4659a2518592bd86fcaed73b08))
+* add Resolver ([0bacc10](https://github.com/onebay/vite-plugin-imp/commit/0bacc10a2049963c78897fedc0f53caf45c91c06))
+* add view-ui ([207dced](https://github.com/onebay/vite-plugin-imp/commit/207dcedf2a4ff72af0ee03aef1bebf444ce8edf2))
+* extract types ([b70938c](https://github.com/onebay/vite-plugin-imp/commit/b70938c622dfb548656b139040fc27e3cebdef17))
+
+
+
+## [2.0.9](https://github.com/onebay/vite-plugin-imp/compare/v2.0.7...v2.0.9) (2021-09-14)
+
+
+### Bug Fixes
+
 * libDirectory is empty string ([a18fa0a](https://github.com/onebay/vite-plugin-imp/commit/a18fa0a02706579e3bddb1ae2847a28b61eb33cb))
 * typo ([39c0c60](https://github.com/onebay/vite-plugin-imp/commit/39c0c6071e4c4829df9117f15df8effbf92fbf6b))
 
