@@ -18,6 +18,7 @@ const optionsCheck = (options: Partial<ImpConfig>) => {
 export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plugin {
   let viteConfig: ResolvedConfig
   let config: ImpConfig
+  let isSourcemap = false
   const name = 'vite-plugin-imp'
   if (!optionsCheck(userConfig)) {
     return { name }
@@ -28,7 +29,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
     configResolved(resolvedConfig) {
       // store the resolved config
       viteConfig = resolvedConfig
-
+      isSourcemap = !!viteConfig.build?.sourcemap
       config = Object.assign({ 
         libList: [], 
         exclude: [], 
@@ -61,7 +62,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
         const sourcemap = this?.getCombinedSourcemap()
         return {
           code: addImportToCode(code, config, viteConfig.command, viteConfig.root, config.ignoreStylePathNotFound),
-          map: sourcemap
+          map: isSourcemap ? sourcemap : null
         }
       }
       return {
