@@ -1,5 +1,5 @@
-# vite-plugin-imp vue3 demo
-include `@arco-design/web-vue`, `ant-design-vue`, `element-plus` and `vant`
+# vite-plugin-imp vue2 demo
+include `element-ui`, `view-design` and `vuetify`
 ## install 
 ``` 
 yarn
