@@ -116,12 +116,18 @@ const matchComponents = [
   },
 ]
 
+const notComponents = ['AddI18nMessages', 'GetLocale', 'UseLocale'];
+
 export const ArcoDesignVueResolver: LibResolver = {
   libName: '@arco-design/web-vue',
   replaceOldImport: false,
   style(name) {
     let styleDir = name
-    console.log(`@arco-design/web-vue`, name)
+    for (const item of notComponents) {
+      if (item === pascalCase(name)) {
+        return false;
+      }
+    }
     for (const item of matchComponents) {
       if (item.pattern.test(pascalCase(name))) {
         styleDir = item.componentDir
