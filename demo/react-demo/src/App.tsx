@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { Image } from '@arco-design/web-react'
 import { Checkbox } from 'antd-mobile';
 import { Avatar } from '@mui/material';
@@ -16,7 +16,12 @@ function App() {
         <Image src={logo} className="App-logo" alt="logo" />
         <p>Hello Vite + React!</p>
         <p>
-          <Button type="primary" onClick={() => setCount((count) => count + 1)}>
+          <Button type="primary" onClick={
+            () => {
+              setCount((count) => count + 1)
+              message.info("hello");
+            }
+          }>
             count is: {count}
           </Button>
         </p>
