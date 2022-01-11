@@ -3,6 +3,7 @@
   <HelloWorld msg="Hello Vue 3 + Vite" />
   <AntDesignVue />
   <ArcoDesignVue />
+  <img v-for="img in imageList" v-lazy="img" />
 </template>
 
 <script lang="ts">
@@ -17,6 +18,14 @@ export default defineComponent({
     HelloWorld,
     AntDesignVue,
     ArcoDesignVue
+  },
+  setup() {
+    return {
+      imageList: [
+        'https://img.yzcdn.cn/vant/apple-1.jpg',
+        'https://img.yzcdn.cn/vant/apple-2.jpg',
+      ],
+    }
   }
 })
 </script>
