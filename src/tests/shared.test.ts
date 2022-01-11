@@ -48,14 +48,14 @@ describe('Test parseImportModule', () => {
 describe('Test style function', () => {
   it ('stylePath is string', () => {
     const testPath = 'onebay/es/button/index.css'
-    const result = stylePathHandler(testPath, '', false)
+    const result = stylePathHandler(testPath, false)
     const isEqual = result === `import '${testPath}';`
     expect(isEqual).toBeTruthy()
   })
 
   it ('stylePath is false', () => {
     const testPath = false
-    const result = stylePathHandler(testPath, '', false)
+    const result = stylePathHandler(testPath, false)
     const isEqual = result === ''
     expect(isEqual).toBeTruthy()
   })
@@ -65,7 +65,7 @@ describe('Test style function', () => {
       'onebay/es/button/index.css',
       'onebay/es/modal/index.css'
     ]
-    const result = stylePathHandler(testPath, '', false)
+    const result = stylePathHandler(testPath, false)
     const p0 = `import '${testPath[0]}';`
     const p1 = `import '${testPath[1]}';`
     expect(result.indexOf(p0) > -1).toBeTruthy()
@@ -87,7 +87,7 @@ describe('Test addImportToCode', () => {
           }
         }
       ]
-    }, 'serve', '', false)
+    }, 'serve', false)
     expect(result.indexOf(`import 'onebay/es/button/index.css';`) >= 0).toBeTruthy()
     expect(result.indexOf(`import 'onebay/es/modal/index.css';`) >= 0).toBeTruthy()
   })

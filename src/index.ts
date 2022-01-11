@@ -61,7 +61,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       if (!/(node_modules)/.test(id) && codeIncludesLibraryName(code, config.libList)) {
         const sourcemap = this?.getCombinedSourcemap()
         return {
-          code: addImportToCode(code, config, viteConfig.command, viteConfig.root, config.ignoreStylePathNotFound),
+          code: addImportToCode(code, config, viteConfig.command, config.ignoreStylePathNotFound),
           map: isSourcemap ? sourcemap : null
         }
       }

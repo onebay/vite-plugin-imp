@@ -4,8 +4,6 @@ import chalk from 'chalk'
 import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
-import path from 'path'
-import fs from 'fs'
 
 type AstNode = {
   source: {
@@ -91,9 +89,17 @@ export const codeIncludesLibraryName = (code: string, libList: ImpConfig['libLis
   });
 }
 
-const stylePathNotFoundHandler = (stylePath: string, root: string, ignoreStylePathNotFound: boolean) => {
+const stylePathNotFoundHandler = (stylePath: string, ignoreStylePathNotFound: boolean) => {
   if (ignoreStylePathNotFound) {
-    if (fs.existsSync(path.resolve(root, 'node_modules', stylePath as string))) {
+    let stylePathExists = true
+    try {
+      // require is used to detect the existence of style files
+      require(stylePath)
+    } catch (error: any) {
+      stylePathExists = error?.code !== 'MODULE_NOT_FOUND'
+    }
+    
+    if (stylePathExists) {
       return `import '${stylePath}';`
     } else {
       warn(`${stylePath} is not found!`)
@@ -104,14 +110,14 @@ const stylePathNotFoundHandler = (stylePath: string, root: string, ignoreStylePa
   return `import '${stylePath}';`
 }
 
-export const stylePathHandler = (stylePath: string | string[] | boolean, root: string, ignoreStylePathNotFound: boolean = true) => {
+export const stylePathHandler = (stylePath: string | string[] | boolean, ignoreStylePathNotFound: boolean = true) => {
   // for some case: when the component does not have a style file to import
   let str = ''
   if (isString(stylePath) && stylePath) {
-    str += stylePathNotFoundHandler(stylePath as string, root, ignoreStylePathNotFound)
+    str += stylePathNotFoundHandler(stylePath as string, ignoreStylePathNotFound)
   } else if (isArray(stylePath)) {
-    stylePath.forEach(item => {
-      str += stylePathNotFoundHandler(item, root, ignoreStylePathNotFound)
+    stylePath.forEach((item) => {
+      str += stylePathNotFoundHandler(item, ignoreStylePathNotFound)
     })
   }
   return str
@@ -121,7 +127,6 @@ export const addImportToCode = (
   code: string, 
   impConfig: ImpConfig, 
   command: ResolvedConfig['command'],
-  root: string,
   ignoreStylePathNotFound?: boolean
 ) => {
 
@@ -136,7 +141,7 @@ export const addImportToCode = (
           item = paramCase(item)
         }
         let stylePath = style(item)
-        const styleImportString = stylePathHandler(stylePath, root, ignoreStylePathNotFound)
+        const styleImportString = stylePathHandler(stylePath, ignoreStylePathNotFound)
         importStr += styleImportString
       })
     }
