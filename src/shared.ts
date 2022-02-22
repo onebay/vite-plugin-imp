@@ -5,21 +5,7 @@ import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
 
-type AstNode = {
-  source: {
-    value?:string
-  }
-}
-
-type Specifiers = {
-  imported: {
-    name?: string
-  }
-  local: {
-    name?: string
-  }
-}
-
+const identity = <T>(v: T) => v
 const isArray = Array.isArray
 const isString = (str: unknown) => (typeof str === 'string')
 
@@ -42,38 +28,53 @@ export function parseImportModule (
   const importMaps: ImportMaps = {}
   const toBeRemoveIndex: number[] = []
   let newImportStatement = ''
-  /* istanbul ignore else */
-  if (isArray(astBody)) {
-    astBody.forEach((astNode, index) => {
-      const libName = (astNode as AstNode)?.source?.value || ''
-      const matchLib = libList.find(lib => lib.libName === libName)
-      /* istanbul ignore else */
-      if (astNode.type === 'ImportDeclaration' && matchLib) {
-        const { camel2DashComponentName = true, libDirectory = 'es', replaceOldImport = command === 'build' } = matchLib
-        astNode.specifiers.forEach((item) => {
-          const name = (item as Specifiers)?.imported.name
-          const localName = (item as Specifiers)?.local.name
-          if(!name) {
-            return
-          }
-          const libDir = libDirectory ? `${libDirectory}/` : ''
-          if (replaceOldImport) {
-            let finalName = camel2DashComponentName ? paramCase(name) : name
-            if (matchLib.nameFormatter) {
-              finalName = matchLib?.nameFormatter?.(finalName, name)
-            }
-            newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}';`
-            toBeRemoveIndex.push(index)
-          }
-          if (importMaps[libName]) {
-            importMaps[libName].push(name)
-          } else {
-            importMaps[libName] = [name]
-          }
-        })
+  astBody.forEach((astNode, index) => {
+    if (astNode.type !== 'ImportDeclaration') {
+      return
+    }
+    const libName = astNode.source.value
+    const matchLib = libList.find((lib) => lib.libName === libName)
+    if (!matchLib) {
+      return
+    }
+    if (astNode.specifiers.length === 0) {
+      warn(`Can't transform ${generate(astNode).code}`)
+      return
+    }
+    const {
+      camel2DashComponentName = true,
+      libDirectory = 'es',
+      replaceOldImport = command === 'build',
+      nameFormatter = identity,
+    } = matchLib
+    astNode.specifiers.forEach((item) => {
+      if (item.type === "ImportNamespaceSpecifier") {
+        warn(`Can't transform ${generate(astNode).code}`)
+        return
+      }
+      const name =
+        item.type === "ImportDefaultSpecifier"
+          ? "default"
+          : item.imported.type === "Identifier"
+          ? item.imported.name
+          : item.imported.value
+      const localName = item.local.name
+      const libDir = libDirectory ? `${libDirectory}/` : ""
+      if (replaceOldImport) {
+        const finalName = nameFormatter(
+          camel2DashComponentName ? paramCase(name) : name,
+          name
+        )
+        newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}'`
+        toBeRemoveIndex.push(index)
+      }
+      if (importMaps[libName]) {
+        importMaps[libName].push(name)
+      } else {
+        importMaps[libName] = [name]
       }
     })
-  }
+  })
 
   ast.program.body = astBody.filter((item, index) => !toBeRemoveIndex.includes(index))
 
