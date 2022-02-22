@@ -1,5 +1,10 @@
-## [2.1.3](https://github.com/onebay/vite-plugin-imp/compare/v2.1.2...v2.1.3) (2022-01-11)
+## [2.1.4](https://github.com/onebay/vite-plugin-imp/compare/v2.1.3...v2.1.4) (2022-02-22)
 
+
+### Bug Fixes
+
+* [#31]
+* gracefully handle other imports ([7140bbf](https://github.com/onebay/vite-plugin-imp/commit/7140bbf0d2f723bf7fa5fbfe2f628a5252837cc8))
 
 ### Bug Fixes
 
