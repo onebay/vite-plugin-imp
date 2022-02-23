@@ -65,7 +65,7 @@ export function parseImportModule (
           camel2DashComponentName ? paramCase(name) : name,
           name
         )
-        newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}'`
+        newImportStatement += `import ${localName} from '${libName}/${libDir}${finalName}';`
         toBeRemoveIndex.push(index)
       }
       if (importMaps[libName]) {
