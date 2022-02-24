@@ -1,4 +1,10 @@
-import { stylePathHandler, parseImportModule, addImportToCode, codeIncludesLibraryName } from '../shared'
+import { 
+  stylePathHandler,
+  parseImportModule,
+  addImportToCode,
+  codeIncludesLibraryName,
+  isTranspileDependencies
+} from '../shared'
 
 describe('Test parseImportModule', () => {
   const code = `import { Button } from 'onebay'`
@@ -123,4 +129,48 @@ describe('Test codeIncludesLibraryName', () => {
     ])
     expect(result).toBeFalsy()
   })
+})
+
+describe('Test isTranspileDependencies', () => {
+  const id = 'node_modules/third-party-lib'
+  it ('transpileDependencies = true', () => {
+    const result = isTranspileDependencies(true, id)
+    expect(result).toBeTruthy()
+  })
+
+  it ('transpileDependencies = false', () => {
+    const result = isTranspileDependencies(false, id)
+    expect(result).toBeFalsy()
+  })
+
+  it ('transpileDependencies = ["third-party-lib"]', () => {
+    const result = isTranspileDependencies(['third-party-lib'], id)
+    expect(result).toBeTruthy()
+  })
+
+  it ('transpileDependencies = [/third-party-lib/]', () => {
+    const result = isTranspileDependencies([/third-party-lib/], id)
+    expect(result).toBeTruthy()
+  })
+
+  it ('transpileDependencies = ["onebay-ui"]', () => {
+    const result = isTranspileDependencies(['onebay-ui'], id)
+    expect(result).toBeFalsy()
+  })
+
+  it ('transpileDependencies = [/onebay-ui/]', () => {
+    const result = isTranspileDependencies([/onebay-ui/], id)
+    expect(result).toBeFalsy()
+  })
+
+  it (`transpileDependencies = [/onebay-ui/, 'third-party-lib']`, () => {
+    const result = isTranspileDependencies([/onebay-ui/, 'third-party-lib'], id)
+    expect(result).toBeTruthy()
+  })
+
+  it (`transpileDependencies = [/onebay-ui/, 'third-party-lib']`, () => {
+    const result = isTranspileDependencies(['onebay-ui', /third-party-lib/], id)
+    expect(result).toBeTruthy()
+  })
+
 })
