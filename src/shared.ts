@@ -5,9 +5,15 @@ import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
 
+function getType(obj: any) {
+  return Object.prototype.toString.call(obj).slice(8, -1);
+}
+
 const identity = <T>(v: T) => v
 const isArray = Array.isArray
-const isString = (str: unknown) => (typeof str === 'string')
+const isString = (obj: unknown): obj is string => (typeof obj === 'string')
+const isBoolean = (obj: unknown): obj is boolean => (typeof obj === 'boolean')
+const isRegExp = (obj: unknown): obj is RegExp => getType(obj) === 'RegExp'
 
 export function parseImportModule (
   code: string, 
@@ -158,4 +164,17 @@ export const log = (...args: any[]) => {
 export const warn = (...args: any[]) => {
   args[0] = `${chalk.yellow('[vite-plugin-imp]')} ${args[0]}`
   console.log(...args)
+}
+
+
+export const isTranspileDependencies = (transpileDependencies: ImpConfig['transpileDependencies'], id: string) => {
+  if(isBoolean(transpileDependencies)) return transpileDependencies;
+  if(isArray(transpileDependencies)) {
+    for (const item of transpileDependencies) {
+      if (isString(item) && id.includes(item) || isRegExp(item) && item.test(id)) {
+        return true
+      }
+    }
+  }
+  return false
 }

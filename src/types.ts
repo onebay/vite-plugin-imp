@@ -38,9 +38,21 @@ export interface ImpConfig {
    */
   exclude?: string[]
   /**
-   * when a style path is not found, don’t show error and give a warning. default `command === 'serve'`
+   * when a style path is not found, don’t show error and give a warning. 
+   * Default: command === 'serve'
    */
-  ignoreStylePathNotFound?: boolean
+   ignoreStylePathNotFound?: boolean
+  /**
+   * By default `vite-plugin-imp` ignores all files inside node_modules. 
+   * You can enable this option to avoid unexpected untranspiled code from third-party dependencies.
+   * 
+   * Transpiling all the dependencies could slow down the build process, though. 
+   * If build performance is a concern, you can explicitly transpile only some of the dependencies 
+   * by passing an array of package names or name patterns to this option.
+   * 
+   * Default: false
+   */
+  transpileDependencies?: boolean | Array<string | RegExp>
 }
 
 export interface ImportMaps {
