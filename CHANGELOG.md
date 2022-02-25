@@ -1,14 +1,14 @@
-## [2.1.5](https://github.com/onebay/vite-plugin-imp/compare/v2.1.3...v2.1.5) (2022-02-23)
+## [2.1.6](https://github.com/onebay/vite-plugin-imp/compare/v2.1.5...v2.1.6) (2022-02-25)
 
-### Bug Fixes
+### Features
 
-* [#32](https://github.com/onebay/vite-plugin-imp/issues/32) ([503d451](https://github.com/onebay/vite-plugin-imp/commit/503d4512c803377f174dfc6df388b97caee3d011))
+* add transpileDependencies config ([a37d99a](https://github.com/onebay/vite-plugin-imp/commit/a37d99a8e2972f4152c17013e04e6ab37863fdec))
+
 ### Bug Fixes
 
 * [#31]
 * gracefully handle other imports ([7140bbf](https://github.com/onebay/vite-plugin-imp/commit/7140bbf0d2f723bf7fa5fbfe2f628a5252837cc8))
 
-### Bug Fixes
 
 * [#25](https://github.com/onebay/vite-plugin-imp/issues/25) ([69e096c](https://github.com/onebay/vite-plugin-imp/commit/69e096c59e05c02cb22024ca614e1e15a07a6584))
 * [#26](https://github.com/onebay/vite-plugin-imp/issues/26) ([d0bd363](https://github.com/onebay/vite-plugin-imp/commit/d0bd363f628471bb527576b9111c7060f231350a))
@@ -20,6 +20,17 @@
 
 * [#21](https://github.com/onebay/vite-plugin-imp/issues/21) ([2bd507b](https://github.com/onebay/vite-plugin-imp/commit/2bd507be80c18808cbb521d6cdfa44c36beef8d1))
 * [#23](https://github.com/onebay/vite-plugin-imp/issues/23) ([c1b2717](https://github.com/onebay/vite-plugin-imp/commit/c1b27176025f9f8242d13aed872119ef8e58ac85))
+
+
+### Features
+
+* add @arco-design/web-vue ([eb63626](https://github.com/onebay/vite-plugin-imp/commit/eb636267363723aecf4f8a70e803641846774011))
+* add arco-design ([34421ee](https://github.com/onebay/vite-plugin-imp/commit/34421eebb2786f718e930d8109b966de0bfb2f9c))
+* add defaultLibList ([1bddfd4](https://github.com/onebay/vite-plugin-imp/commit/1bddfd4fdc5e4c4659a2518592bd86fcaed73b08))
+* add Resolver ([0bacc10](https://github.com/onebay/vite-plugin-imp/commit/0bacc10a2049963c78897fedc0f53caf45c91c06))
+* add view-ui ([207dced](https://github.com/onebay/vite-plugin-imp/commit/207dcedf2a4ff72af0ee03aef1bebf444ce8edf2))
+* extract types ([b70938c](https://github.com/onebay/vite-plugin-imp/commit/b70938c622dfb548656b139040fc27e3cebdef17))
+
 
 
 # [2.1.0](https://github.com/onebay/vite-plugin-imp/compare/v2.0.9...v2.1.0) (2021-12-27)
