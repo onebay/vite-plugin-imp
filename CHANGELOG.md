@@ -1,17 +1,20 @@
-## [2.1.6](https://github.com/onebay/vite-plugin-imp/compare/v2.1.5...v2.1.6) (2022-02-25)
+## [2.1.7](https://github.com/onebay/vite-plugin-imp/compare/v2.1.2...v2.1.7) (2022-03-31)
+
+
+### Bug Fixes
+
+* [#25](https://github.com/onebay/vite-plugin-imp/issues/25) ([69e096c](https://github.com/onebay/vite-plugin-imp/commit/69e096c59e05c02cb22024ca614e1e15a07a6584))
+* [#26](https://github.com/onebay/vite-plugin-imp/issues/26) ([d0bd363](https://github.com/onebay/vite-plugin-imp/commit/d0bd363f628471bb527576b9111c7060f231350a))
+* [#32](https://github.com/onebay/vite-plugin-imp/issues/32) ([503d451](https://github.com/onebay/vite-plugin-imp/commit/503d4512c803377f174dfc6df388b97caee3d011))
+* [#38] ([4015bf1](https://github.com/onebay/vite-plugin-imp/commit/4015bf13ba0e4112492a37562258300c098ba15e))
+* gracefully handle other imports ([7140bbf](https://github.com/onebay/vite-plugin-imp/commit/7140bbf0d2f723bf7fa5fbfe2f628a5252837cc8))
+
 
 ### Features
 
 * add transpileDependencies config ([a37d99a](https://github.com/onebay/vite-plugin-imp/commit/a37d99a8e2972f4152c17013e04e6ab37863fdec))
 
-### Bug Fixes
 
-* [#31]
-* gracefully handle other imports ([7140bbf](https://github.com/onebay/vite-plugin-imp/commit/7140bbf0d2f723bf7fa5fbfe2f628a5252837cc8))
-
-
-* [#25](https://github.com/onebay/vite-plugin-imp/issues/25) ([69e096c](https://github.com/onebay/vite-plugin-imp/commit/69e096c59e05c02cb22024ca614e1e15a07a6584))
-* [#26](https://github.com/onebay/vite-plugin-imp/issues/26) ([d0bd363](https://github.com/onebay/vite-plugin-imp/commit/d0bd363f628471bb527576b9111c7060f231350a))
 
 ## [2.1.2](https://github.com/onebay/vite-plugin-imp/compare/v2.1.0...v2.1.2) (2021-12-29)
 
