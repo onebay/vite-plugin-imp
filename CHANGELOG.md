@@ -1,7 +1,23 @@
-## [2.1.8](https://github.com/onebay/vite-plugin-imp/compare/v2.1.3...v2.1.8) (2022-04-24)
+# [2.2.0](https://github.com/onebay/vite-plugin-imp/compare/v2.1.7...v2.2.0) (2022-06-08)
+
 
 ### Bug Fixes
+
 * [#40](https://github.com/onebay/vite-plugin-imp/issues/40) ([0de8307](https://github.com/onebay/vite-plugin-imp/commit/0de8307fd6f91fe4dc7bba89dbd0123af69914dd))
+* **resolver:** compatible with vant@3.5.0 ([744dfe7](https://github.com/onebay/vite-plugin-imp/commit/744dfe701df9d0cbe5d3dfa242bc072d447d1e57))
+
+
+### Features
+
+* optimize ignoreStylePathNotFound ([4f03309](https://github.com/onebay/vite-plugin-imp/commit/4f0330961421b092c53455353a2a1e86cd200333))
+
+
+### Reverts
+
+* Revert "feat: use unbuild" ([26fdfb7](https://github.com/onebay/vite-plugin-imp/commit/26fdfb7df151068cd67facbe8a4db4c28b8b8ac2))
+* Revert "--amend" ([772465a](https://github.com/onebay/vite-plugin-imp/commit/772465ac725a513f0baa7cda19e4abe74554741d))
+
+
 
 ## [2.1.7](https://github.com/onebay/vite-plugin-imp/compare/v2.1.2...v2.1.7) (2022-03-31)
 
@@ -11,7 +27,7 @@
 * [#25](https://github.com/onebay/vite-plugin-imp/issues/25) ([69e096c](https://github.com/onebay/vite-plugin-imp/commit/69e096c59e05c02cb22024ca614e1e15a07a6584))
 * [#26](https://github.com/onebay/vite-plugin-imp/issues/26) ([d0bd363](https://github.com/onebay/vite-plugin-imp/commit/d0bd363f628471bb527576b9111c7060f231350a))
 * [#32](https://github.com/onebay/vite-plugin-imp/issues/32) ([503d451](https://github.com/onebay/vite-plugin-imp/commit/503d4512c803377f174dfc6df388b97caee3d011))
-* [#38] ([4015bf1](https://github.com/onebay/vite-plugin-imp/commit/4015bf13ba0e4112492a37562258300c098ba15e))
+* antd-mobile v5 ([4015bf1](https://github.com/onebay/vite-plugin-imp/commit/4015bf13ba0e4112492a37562258300c098ba15e))
 * gracefully handle other imports ([7140bbf](https://github.com/onebay/vite-plugin-imp/commit/7140bbf0d2f723bf7fa5fbfe2f628a5252837cc8))
 
 
