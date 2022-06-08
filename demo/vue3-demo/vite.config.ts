@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import vitePluginImp from '../../dist'
+import vitePluginImp from '../../dist/index.cjs'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 const { ANALYZE } = process.env;

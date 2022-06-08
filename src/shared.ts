@@ -1,11 +1,14 @@
 import * as parser from '@babel/parser'
-import generate from "@babel/generator"
+import Generate from "@babel/generator"
 import chalk from 'chalk'
 import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
 import * as path from 'path'
 import * as fs from 'fs'
+
+// for mjs
+const generate = typeof Generate === 'function' ? Generate : (Generate as any).default;
 
 function getType(obj: any) {
   return Object.prototype.toString.call(obj).slice(8, -1);
@@ -119,12 +122,12 @@ const stylePathNotFoundHandler = (stylePath: string, ignoreStylePathNotFound: bo
       const lastPath = fullStylePath.split('/').pop()
       if (!lastPath?.includes('.')) {
         const possibleEndWithsPaths = [
-          'index.js',
-          'index.mjs',
+          '/index.js',
+          '/index.mjs',
           '.js',
           '.mjs'
         ];
-        if(possibleEndWithsPaths.some(p => fs.existsSync(path.resolve(fullStylePath, p)))) {
+        if(possibleEndWithsPaths.some(p => fs.existsSync(fullStylePath + p))) {
           stylePathExists = true
         }
       }
