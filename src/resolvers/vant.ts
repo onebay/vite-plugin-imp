@@ -3,5 +3,5 @@ import { LibResolver } from '../types'
 export const VantResolver: LibResolver = {
   libName: 'vant',
   replaceOldImport: false,
-  style: (name) => `vant/es/${name}/style`
+  style: (name) => `vant/es/${name}/style/index`
 }

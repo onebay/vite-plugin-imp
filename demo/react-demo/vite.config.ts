@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 // import vitePluginImp from 'vite-plugin-imp'
-import vitePluginImp from '../../dist'
+import vitePluginImp from '../../dist/index.cjs'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 const { ANALYZE } = process.env;

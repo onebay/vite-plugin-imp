@@ -4,8 +4,8 @@ import chalk from 'chalk'
 import defaultLibList from './resolvers'
 import * as path from 'path'
 import * as fs from 'fs'
+import { createRequire } from 'module';
 import { ImpConfig } from './types'
-
 
 const optionsCheck = (options: Partial<ImpConfig>) => {
   if (options?.libList && !Array.isArray(options?.libList)) {
@@ -43,7 +43,9 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       // check user package.json to filter LibList from user dependencies
       const userPkgPath = path.resolve(viteConfig.root, 'package.json')
       if (fs.existsSync(userPkgPath)) {
-        const userPkg = await import(userPkgPath)
+        // @ts-ignore
+        const require = createRequire(import.meta.url);
+        const userPkg = require(userPkgPath);
         if (userPkg?.dependencies) {
           defaultLibFilteredList = defaultLibFilteredList.filter(item => userPkg?.dependencies?.[item.libName])
         }
@@ -76,5 +78,3 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
     }
   }
 }
-
-module.exports = vitePluginImp
