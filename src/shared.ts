@@ -4,6 +4,8 @@ import chalk from 'chalk'
 import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
+import * as path from 'path'
+import * as fs from 'fs'
 
 function getType(obj: any) {
   return Object.prototype.toString.call(obj).slice(8, -1);
@@ -104,6 +106,28 @@ const stylePathNotFoundHandler = (stylePath: string, ignoreStylePathNotFound: bo
       require(stylePath)
     } catch (error: any) {
       stylePathExists = error?.code !== 'MODULE_NOT_FOUND'
+    }
+    
+    /**
+     * solve a situation
+     * when stylePath like 'vant/es/button/style', it can't be require(), 
+     * but can be import, because 'vant/es/button/style/index.js' or 
+     * 'vant/es/button/style/index.mjs' (in vant v3.5.0) is exists.
+     */
+    if (!stylePathExists) {
+      const fullStylePath = path.resolve(process.cwd(), 'node_modules', stylePath)
+      const lastPath = fullStylePath.split('/').pop()
+      if (!lastPath?.includes('.')) {
+        const possibleEndWithsPaths = [
+          'index.js',
+          'index.mjs',
+          '.js',
+          '.mjs'
+        ];
+        if(possibleEndWithsPaths.some(p => fs.existsSync(path.resolve(fullStylePath, p)))) {
+          stylePathExists = true
+        }
+      }
     }
     
     if (stylePathExists) {

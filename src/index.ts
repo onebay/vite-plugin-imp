@@ -26,7 +26,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
   
   return {
     name,
-    configResolved(resolvedConfig) {
+    async configResolved(resolvedConfig) {
       // store the resolved config
       viteConfig = resolvedConfig
       isSourcemap = !!viteConfig.build?.sourcemap
@@ -43,7 +43,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       // check user package.json to filter LibList from user dependencies
       const userPkgPath = path.resolve(viteConfig.root, 'package.json')
       if (fs.existsSync(userPkgPath)) {
-        const userPkg = require(userPkgPath)
+        const userPkg = await import(userPkgPath)
         if (userPkg?.dependencies) {
           defaultLibFilteredList = defaultLibFilteredList.filter(item => userPkg?.dependencies?.[item.libName])
         }
@@ -76,3 +76,5 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
     }
   }
 }
+
+module.exports = vitePluginImp
