@@ -184,6 +184,36 @@ export const addImportToCode = (
   return `${importStr}${codeRemoveOriginImport}`
 }
 
+export const analyzeCode = (
+  code: string, 
+  impConfig: ImpConfig, 
+  command: ResolvedConfig['command'],
+  ignoreStylePathNotFound?: boolean
+) => {
+
+  const { importMaps, codeRemoveOriginImport } = parseImportModule(code, impConfig.libList, command)
+
+  let importStr = ''
+
+  impConfig.libList.forEach(({ libName, style = () => false, camel2DashComponentName = true }) => {
+    if (importMaps[libName]) {
+      importMaps[libName].forEach(item => {
+        if (camel2DashComponentName) {
+          item = paramCase(item)
+        }
+        let stylePath = style(item)
+        const styleImportString = stylePathHandler(stylePath, ignoreStylePathNotFound)
+        importStr += styleImportString
+      })
+    }
+  })
+
+  return {
+    importStr,
+    codeRemoveOriginImport
+  }
+}
+
 export const log = (...args: any[]) => {
   args[0] = `${chalk.green('[vite-plugin-imp]')} ${args[0]}`
   console.log(...args)
