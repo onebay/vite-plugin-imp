@@ -1,3 +1,11 @@
+# [2.3.0](https://github.com/onebay/vite-plugin-imp/compare/v2.1.8...v2.3.0) (2022-08-24)
+
+
+### Bug Fixes
+
+* [#66](https://github.com/onebay/vite-plugin-imp/issues/66) ([f21486c](https://github.com/onebay/vite-plugin-imp/commit/f21486c905a57d6a87a9b0f8541a4c92be9f3ee2))
+* **resolver:** compatible with vant@3.5.0 ([744dfe7](https://github.com/onebay/vite-plugin-imp/commit/744dfe701df9d0cbe5d3dfa242bc072d447d1e57))
+
 # [2.2.0](https://github.com/onebay/vite-plugin-imp/compare/v2.1.7...v2.2.0) (2022-06-08)
 
 
