@@ -19,6 +19,7 @@ function App() {
           <Button type="primary" onClick={
             () => {
               setCount((count) => count + 1)
+              console.log("hello")
               message.info("hello");
             }
           }>

@@ -1,5 +1,5 @@
 import { Plugin, ResolvedConfig } from 'vite'
-import { log, addImportToCode, codeIncludesLibraryName, isTranspileDependencies } from './shared'
+import { log, analyzeCode, codeIncludesLibraryName, isTranspileDependencies } from './shared'
 import chalk from 'chalk'
 import defaultLibList from './resolvers'
 import * as path from 'path'
@@ -66,8 +66,10 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
           && codeIncludesLibraryName(code, config.libList)
         ) {
         const sourcemap = this?.getCombinedSourcemap()
+        const { importStr, codeRemoveOriginImport } = analyzeCode(code, config, viteConfig.command, config.ignoreStylePathNotFound);
+
         return {
-          code: addImportToCode(code, config, viteConfig.command, config.ignoreStylePathNotFound),
+          code: `${importStr};${viteConfig.command === 'serve' ? code : codeRemoveOriginImport}`,
           map: isSourcemap ? sourcemap : null
         }
       }
