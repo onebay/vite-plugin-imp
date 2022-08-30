@@ -29,7 +29,7 @@
     "rollup-plugin-visualizer": "^5.5.2",
     "stream": "^0.0.2",
     "typescript": "^4.1.3",
-    "vite": "^2.5.8",
+    "vite": "^2.9.13",
     "vite-plugin-imp": "2.0.8"
   }
 }
