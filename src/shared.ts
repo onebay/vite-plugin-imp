@@ -4,11 +4,14 @@ import chalk from 'chalk'
 import { paramCase } from 'param-case'
 import { ResolvedConfig } from 'vite'
 import { ImpConfig, ImportMaps } from './types'
+import { Module as module } from 'module'
 import * as path from 'path'
 import * as fs from 'fs'
 
 // for mjs
 const generate = typeof Generate === 'function' ? Generate : (Generate as any).default;
+
+const createRequire = module.createRequire || module.createRequireFromPath
 
 function getType(obj: any) {
   return Object.prototype.toString.call(obj).slice(8, -1);
@@ -106,7 +109,7 @@ const stylePathNotFoundHandler = (stylePath: string, ignoreStylePathNotFound: bo
     let stylePathExists = true
     try {
       // require is used to detect the existence of style files
-      require(stylePath)
+      createRequire(process.cwd() + path.sep).resolve(stylePath)
     } catch (error: any) {
       stylePathExists = error?.code !== 'MODULE_NOT_FOUND'
     }
