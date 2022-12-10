@@ -1,6 +1,6 @@
 {
-  "name": "vite-plugin-imp",
-  "version": "2.3.1",
+  "name": "@yutengjing/vite-plugin-imp",
+  "version": "2.4.0",
   "description": "A vite plugin for import style automatic",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
