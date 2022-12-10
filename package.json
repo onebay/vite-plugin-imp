@@ -12,6 +12,28 @@
       "require": "./dist/index.cjs"
     }
   },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "keywords": [
+    "vite plugin imp"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "YuTengjing",
+    "url": "https://github.com/tjx666",
+    "email": "ytj2713151713@gmail.com"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/tjx666/vite-plugin-imp",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:tjx666/vite-plugin-imp.git"
+  },
   "scripts": {
     "dev": "tsc -w -p .",
     "build": "rm -rf dist && tsc -p .",
@@ -21,22 +43,8 @@
     "patch-cjs": "ts-node scripts/patchCJS.ts --module=CommonJS",
     "unbuild": "unbuild && yarn patch-cjs"
   },
-  "keywords": [
-    "vite plugin imp"
-  ],
-  "author": "psaren",
-  "license": "MIT",
   "peerDependencies": {
     "vite": "4.0.0"
-  },
-  "files": [
-    "dist",
-    "CHANGELOG.md",
-    "README.md"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/onebay/vite-plugin-imp.git"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
