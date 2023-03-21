@@ -138,6 +138,8 @@ export default defineConfig({
 - [view ui](./src/resolvers/view-ui.ts)
 - [vuetify](./src/resolvers/vuetify.ts)
 
+> You should put these built-in supported libraries in your `dependencies` field in package.json.
+
 If your project is using libraries that mentioned above, you just need use it like: 
 ```ts
 export default defineConfig({
