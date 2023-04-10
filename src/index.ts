@@ -1,10 +1,11 @@
-import { Plugin, ResolvedConfig } from 'vite'
-import { log, analyzeCode, codeIncludesLibraryName, isTranspileDependencies } from './shared'
-import chalk from 'chalk'
-import defaultLibList from './resolvers'
-import * as path from 'path'
 import * as fs from 'fs'
-import { createRequire } from 'module';
+import { createRequire } from 'module'
+import * as path from 'path'
+import chalk from 'chalk'
+import { Plugin, ResolvedConfig } from 'vite'
+
+import defaultLibList from './resolvers'
+import { analyzeCode, codeIncludesLibraryName, isTranspileDependencies, log } from './shared'
 import { ImpConfig } from './types'
 
 const optionsCheck = (options: Partial<ImpConfig>) => {
@@ -23,36 +24,44 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
   if (!optionsCheck(userConfig)) {
     return { name }
   }
-  
+
   return {
     name,
     async configResolved(resolvedConfig) {
       // store the resolved config
       viteConfig = resolvedConfig
       isSourcemap = !!viteConfig.build?.sourcemap
-      config = Object.assign({ 
-        libList: [], 
-        exclude: [], 
-        ignoreStylePathNotFound: viteConfig.command === 'serve'
-      }, userConfig)
-    
-      const libListNameSet: Set<string> = new Set(config.libList.map(lib => lib.libName))
+      config = Object.assign(
+        {
+          libList: [],
+          exclude: [],
+          ignoreStylePathNotFound: viteConfig.command === 'serve',
+          excludeTranspileFiles: [/\.html(\?.*)?$/],
+        },
+        userConfig
+      )
+
+      const libListNameSet: Set<string> = new Set(config.libList.map((lib) => lib.libName))
       // filter defaultLibList from exclude
-      let defaultLibFilteredList = defaultLibList.filter(lib => !config.exclude?.includes(lib.libName))
+      let defaultLibFilteredList = defaultLibList.filter(
+        (lib) => !config.exclude?.includes(lib.libName)
+      )
 
       // check user package.json to filter LibList from user dependencies
       const userPkgPath = path.resolve(viteConfig.root, 'package.json')
       if (fs.existsSync(userPkgPath)) {
         // @ts-ignore
-        const require = createRequire(import.meta.url);
-        const userPkg = require(userPkgPath);
+        const require = createRequire(import.meta.url)
+        const userPkg = require(userPkgPath)
         if (userPkg?.dependencies) {
-          defaultLibFilteredList = defaultLibFilteredList.filter(item => userPkg?.dependencies?.[item.libName])
+          defaultLibFilteredList = defaultLibFilteredList.filter(
+            (item) => userPkg?.dependencies?.[item.libName]
+          )
         }
       }
 
       // merge defaultLibFilteredList to config.libList
-      defaultLibFilteredList.forEach(defaultLib => {
+      defaultLibFilteredList.forEach((defaultLib) => {
         if (!libListNameSet.has(defaultLib.libName)) {
           config.libList?.push(defaultLib)
           libListNameSet.add(defaultLib.libName)
@@ -60,23 +69,29 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       })
     },
     transform(code, id) {
-        const { transpileDependencies = false } = config
-        if (
-          (!/(node_modules)/.test(id) || isTranspileDependencies(transpileDependencies, id)) 
-          && codeIncludesLibraryName(code, config.libList)
-        ) {
+      const { transpileDependencies = false } = config
+      if (
+        !config.excludeTranspileFiles!.some((reg) => reg.test(id)) &&
+        (!/(node_modules)/.test(id) || isTranspileDependencies(transpileDependencies, id)) &&
+        codeIncludesLibraryName(code, config.libList)
+      ) {
         const sourcemap = this?.getCombinedSourcemap()
-        const { importStr, codeRemoveOriginImport } = analyzeCode(code, config, viteConfig.command, config.ignoreStylePathNotFound);
+        const { importStr, codeRemoveOriginImport } = analyzeCode(
+          code,
+          config,
+          viteConfig.command,
+          config.ignoreStylePathNotFound
+        )
 
         return {
           code: `${importStr};${viteConfig.command === 'serve' ? code : codeRemoveOriginImport}`,
-          map: isSourcemap ? sourcemap : null
+          map: isSourcemap ? sourcemap : null,
         }
       }
       return {
         code,
-        map: null
+        map: null,
       }
-    }
+    },
   }
 }
