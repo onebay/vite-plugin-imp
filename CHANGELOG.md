@@ -1,10 +1,21 @@
-# [2.3.0](https://github.com/onebay/vite-plugin-imp/compare/v2.1.8...v2.3.0) (2022-08-24)
+# [2.4.0](https://github.com/onebay/vite-plugin-imp/compare/v2.3.1...v2.4.0) (2023-04-24)
+
+
+### Bug Fixes
+
+* [#92](https://github.com/onebay/vite-plugin-imp/issues/92) ([8a4aa5d](https://github.com/onebay/vite-plugin-imp/commit/8a4aa5d81f0ba4edf3acbd73bdfbdee8b3d8265a))
+
+
+
+## [2.3.1](https://github.com/onebay/vite-plugin-imp/compare/v2.2.0...v2.3.1) (2022-10-28)
 
 
 ### Bug Fixes
 
 * [#66](https://github.com/onebay/vite-plugin-imp/issues/66) ([f21486c](https://github.com/onebay/vite-plugin-imp/commit/f21486c905a57d6a87a9b0f8541a4c92be9f3ee2))
-* **resolver:** compatible with vant@3.5.0 ([744dfe7](https://github.com/onebay/vite-plugin-imp/commit/744dfe701df9d0cbe5d3dfa242bc072d447d1e57))
+* require style paths in context of cwd ([f5ea69e](https://github.com/onebay/vite-plugin-imp/commit/f5ea69eef40b719eddb452e3d95aa29c0abe9978))
+
+
 
 # [2.2.0](https://github.com/onebay/vite-plugin-imp/compare/v2.1.7...v2.2.0) (2022-06-08)
 
