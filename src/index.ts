@@ -33,6 +33,7 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       config = Object.assign({ 
         libList: [], 
         exclude: [], 
+        removeOriginImport: viteConfig.command === 'build',
         ignoreStylePathNotFound: viteConfig.command === 'serve'
       }, userConfig)
     
@@ -60,16 +61,15 @@ export default function vitePluginImp(userConfig: Partial<ImpConfig> = {}): Plug
       })
     },
     transform(code, id) {
-        const { transpileDependencies = false } = config
+        const { transpileDependencies = false, removeOriginImport } = config
         if (
           (!/(node_modules)/.test(id) || isTranspileDependencies(transpileDependencies, id)) 
           && codeIncludesLibraryName(code, config.libList)
         ) {
         const sourcemap = this?.getCombinedSourcemap()
-        const { importStr, codeRemoveOriginImport } = analyzeCode(code, config, viteConfig.command, config.ignoreStylePathNotFound);
-
+        const { importStr, codeRemoveOriginImport } = analyzeCode(code, config, 'build', config.ignoreStylePathNotFound);
         return {
-          code: `${importStr};${viteConfig.command === 'serve' ? code : codeRemoveOriginImport}`,
+          code: `${importStr};${removeOriginImport ? codeRemoveOriginImport : code}`,
           map: isSourcemap ? sourcemap : null
         }
       }

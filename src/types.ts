@@ -53,6 +53,11 @@ export interface ImpConfig {
    * Default: false
    */
   transpileDependencies?: boolean | Array<string | RegExp>
+  /**
+   * If you want remove origin import statement anyway, make it `ture`
+   * Default: command === 'build'
+  */
+  removeOriginImport?: boolean
 }
 
 export interface ImportMaps {
