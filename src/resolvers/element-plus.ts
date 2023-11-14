@@ -8,7 +8,7 @@ export const ElementPlusResolver: LibResolver = {
   },
   style: (name) => {
     if (['el-config-provider', 'effect'].includes(name)) return false;
-    return `element-plus/es/components/${name.replace('el-', '')}/style/css.js`;
+    return `element-plus/es/components/${name.replace('el-', '')}/style/css.mjs`;
   },
 }
 
